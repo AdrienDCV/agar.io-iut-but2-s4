@@ -27,32 +27,37 @@ function render() {
 window.onkeydown = move;
 
 function move(event) {
-	if (x < canvas.clientWidth - player1.radius*2 && x >= 0) {
+	console.log(`${player1.xPosition}`);
+	console.log(`+ ${player1.xPosition < canvas.clientWidth}`);
+	console.log(`- ${player1.xPosition > canvas.clientWidth}`);
+	
+	if (player1.xPosition <= 0 || player1.xPosition <= canvas.clientWidth) {
 		if (event.code == 'ArrowRight') {
 			console.log(event.code);
 			player1.xPosition += 5;
 		}
+	}
 
+	if (player1.xPosition >= 0|| player1.xPosition >= canvas.clientWidth) {
 		if (event.code == 'ArrowLeft') {
 			console.log(event.code);
 			player1.xPosition -= 5;
 		}
 	}
 
-	if (y < canvas.clientHeight - player1.radius*2 && y >= 0) {
-		if (event.code == 'ArrowDown') {
-			console.log(event.code);
-			player1.yPosition += 5;
-		}
-
+	if (player1.yPosition <= 0 || player1.yPosition <= canvas.clientHeight) {
 		if (event.code == 'ArrowUp') {
 			console.log(event.code);
 			player1.yPosition -= 5;
 		}
 	}
 
-	x = player1.xPosition;
-	y = player1.yPosition;
+	if (player1.yPosition >= 0|| player1.yPosition >= canvas.clientHeight) {
+		if (event.code == 'ArrowDown') {
+			console.log(event.code);
+			player1.yPosition += 5;
+		}
+	}
 
 	render();
 }
