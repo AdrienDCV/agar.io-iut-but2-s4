@@ -45,14 +45,14 @@ function move(event) {
 		}
 	}
 
-	if (player1.yPosition <= 0 || player1.yPosition <= canvas.clientHeight) {
+	if (player1.yPosition >= 0 || player1.yPosition >= canvas.clientHeight) {
 		if (event.code == 'ArrowUp') {
 			console.log(event.code);
 			player1.yPosition -= 5;
 		}
 	}
 
-	if (player1.yPosition >= 0|| player1.yPosition >= canvas.clientHeight) {
+	if (player1.yPosition <= 0|| player1.yPosition <= canvas.clientHeight) {
 		if (event.code == 'ArrowDown') {
 			console.log(event.code);
 			player1.yPosition += 5;
