@@ -1,4 +1,5 @@
 import Color from "color";
+import Dot from "./Dot.js";
 import Player from "./Player.js";
 
 const canvas = document.querySelector('.gameCanvas');
@@ -8,19 +9,34 @@ let x = 0;
 let y = 0;
 let xDirection = 0;
 let yDirection = 0;	
-
+const colors=[new Color('red'),new Color('yellow'),new Color('blue'),new Color('red')];
 const player1 = new Player(100,100,50, new Color(`#FF0000`), context, 'Parppaing', 0);
-const player2 = new Player(200,200,50, new Color(`#AE1D23`), context, 'Parppaing', 0);
+const player2 = new Player(200,200,50, new Color(`#AE1D23`), context, 'Parppaing', 0); 
+let dot1=new Dot(Math.random()*canvas.clientWidth,Math.random()*canvas.clientHeight,10,new Color('green'),context);
 player1.drawDot();
 player2.drawDot();
+dot1.drawDot();
+
+let dots=[]
+for(let i=0; i<10;i++){
+    dots[i]=new Dot(Math.random()*canvas.clientWidth,Math.random()*canvas.clientHeight,10,colors[Math.round(Math.random()*3)],context);
+}
+for(let i=0;i<10;i++){
+    dots[i].drawDot();
+}
 
 window.onkeydown = move;
 //window.onkeyup = stopMove;
+
 
 function render() {
 	context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 	player1.drawDot();
 	player2.drawDot();
+    for(let i=0;i<10;i++){
+        dots[i].drawDot();
+    }
+
 	requestAnimationFrame(render);
 }
 
@@ -56,3 +72,6 @@ function move(event) {
 
 	render();
 }
+
+
+
