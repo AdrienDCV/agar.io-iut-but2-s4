@@ -1,12 +1,11 @@
-import Color from "color"; 
-
 export default class Dot {
 
-    #colour;
-    #radius;
-    #xPosition;
-    #yPosition;
-    #context;
+    colour;
+    radius;
+    xPosition;
+    yPosition;
+    context;
+    canvas
 
     constructor(xPosition, yPosition, radius, colour, context) {
         this.xPosition = xPosition;

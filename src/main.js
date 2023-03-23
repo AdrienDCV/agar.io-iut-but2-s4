@@ -4,67 +4,72 @@ import Player from "./Player.js";
 const canvas = document.querySelector('.gameCanvas');
 const context = canvas.getContext('2d');
 
+console.log(canvas);
+
 const player1 = new Player(100,100,50, new Color(`#FF0000`), context, 'Parppaing', 0);
-const player2 = new Player(200,200,50, new Color(`#AE1D23`), context, 'Parppaing', 0);
-player1.drawDot();
-player2.drawDot();
+const player2 = new Player(200,200,50, new Color(`#AE1D23`), context, canvas, 'Parppaing', 0);
+const players = [];
+players.push(player1, player2);
 
-window.onkeydown = move;
-
-canvas.addEventListener("mousemove", mouseMoveHandler, false);
-
-function mouseMoveHandler(e) {
-	const relativeX = e.clientX - canvas.offsetLeft;
-	const relativeY = e.clientY - canvas.offsetLeft;
-	if (relativeX > 0 && relativeX < canvas.clientWidth) {
-	  player1.xPosition = relativeX - player1.radius / 2;
-	}
-	if (relativeY > 0 && relativeY < canvas.clientHeight) {
-		player1.yPosition = relativeY - player1.radius / 2;
-	}
-
-	render();
-}
+requestAnimationFrame(render);
 
 function render() {
 	context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-	player1.drawDot();
-	player2.drawDot();
+	players.forEach(player => player.drawDot());
+	followMouse();
 	requestAnimationFrame(render);
 }
 
-function move(event) {
-	// console.log(`${player1.xPosition}`);
-	// console.log(`+ ${player1.xPosition < canvas.clientWidth}`);
-	// console.log(`- ${player1.xPosition > canvas.clientWidth}`);
-	
-	if (player1.xPosition <= 0 || player1.xPosition <= canvas.clientWidth) {
-		if (event.code == 'ArrowRight') {
-			console.log(event.code);
-			player1.xPosition += 5;
-		}
-	}
+let mouseX;
+let mouseY;
+canvas.addEventListener('mousemove', event => {
+	mouseX = event.clientX;
+	mouseY = event.clientY;
+} );
 
-	if (player1.xPosition >= 0|| player1.xPosition >= canvas.clientWidth) {
-		if (event.code == 'ArrowLeft') {
-			console.log(event.code);
-			player1.xPosition -= 5;
-		}
-	}
+function followMouse() {
 
-	if (player1.yPosition >= 0 || player1.yPosition >= canvas.clientHeight) {
-		if (event.code == 'ArrowUp') {
-			console.log(event.code);
-			player1.yPosition -= 5;
-		}
-	}
-
-	if (player1.yPosition <= 0|| player1.yPosition <= canvas.clientHeight) {
-		if (event.code == 'ArrowDown') {
-			console.log(event.code);
-			player1.yPosition += 5;
-		}
-	}
-
-	render();
+	players.forEach(player => {			
+		player.xPosition -= (player.xPosition - mouseX) * 0.005;
+		player.yPosition -= (player.yPosition - mouseY) * 0.005;
+	}); 
 }
+
+// function move(event) {
+// 	// console.log(`${this.xPosition}`);
+// 	// console.log(`+ ${this.xPosition < canvas.clientWidth}`);
+// 	// console.log(`- ${this.xPosition > canvas.clientWidth}`);
+	
+// 	if (this.xPosition <= 0 || this.xPosition <= canvas.clientWidth) {
+// 		if (event.code == 'ArrowRight') {
+// 			console.log(event.code);
+// 			this.xPosition += 5;
+// 		}
+// 	}
+
+// 	if (this.xPosition >= 0|| this.xPosition >= canvas.clientWidth) {
+// 		if (event.code == 'ArrowLeft') {
+// 			console.log(event.code);
+// 			this.xPosition -= 5;
+// 		}
+// 	}
+
+// 	if (this.yPosition >= 0 || this.yPosition >= canvas.clientHeight) {
+// 		if (event.code == 'ArrowUp') {
+// 			console.log(event.code);
+// 			this.yPosition -= 5;
+// 		}
+// 	}
+
+// 	if (this.yPosition <= 0|| this.yPosition <= canvas.clientHeight) {
+// 		if (event.code == 'ArrowDown') {
+// 			console.log(event.code);
+// 			this.yPosition += 5;
+// 		}
+// 	}
+
+// 	render();
+// }
+
+function showCanvas() {};
+setInterval(showCanvas, 1000/60);
