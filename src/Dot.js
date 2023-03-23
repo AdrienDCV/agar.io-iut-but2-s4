@@ -42,6 +42,7 @@ export default class Dot {
                 this.radius+=dotEaten.radius;
             }
             dotEaten.isEaten=true;
+            console.log('eaten');
         }
     }
 
