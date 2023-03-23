@@ -7,6 +7,7 @@ export default class Dot {
     #xPosition;
     #yPosition;
     #context;
+    #isEaten=false;
 
     constructor(xPosition, yPosition, radius, colour, context) {
         this.xPosition = xPosition;
@@ -24,6 +25,24 @@ export default class Dot {
         this.context.arc(this.xPosition, this.yPosition, this.radius, 360, 0, 2 * Math.PI);
         this.context.fill();
         this.context.stroke();
+    }
+
+    eats(dotEaten){
+        if(dotEaten.radius>this.radius){
+            dotEaten.eats(this);
+        }
+        else if(dotEaten.radius===this.radius){
+            
+        }
+        else{
+            if(dotEaten.username!=null){
+            this.radius+=dotEaten.radius/4;
+            }
+            else{
+                this.radius+=dotEaten.radius;
+            }
+            dotEaten.isEaten=true;
+        }
     }
 
    

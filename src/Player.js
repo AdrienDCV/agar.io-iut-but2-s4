@@ -11,4 +11,6 @@ export default class Player extends Dot {
         this.username = username;
         this.score = score;
     }
+
+    
 }
