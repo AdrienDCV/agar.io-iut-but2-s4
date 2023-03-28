@@ -1,4 +1,4 @@
-import Dot from "./Dot.js";
+import Dot from "./Dot.ts";
 
 export default class Player extends Dot {
 

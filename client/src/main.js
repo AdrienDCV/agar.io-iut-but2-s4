@@ -1,6 +1,10 @@
 import Color from "color";
-import Dot from "./Dot.js";
-import Player from "./Player.js";
+import Dot from "./Dot.ts";
+import Player from "./Player.ts";
+
+import { io } from 'socket.io-client';
+
+const socket = io();
 
 const canvas = document.querySelector('.gameCanvas');
 const context = canvas.getContext('2d');
@@ -27,11 +31,7 @@ generateDots();
 function render() {
 	
 	context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
-	entities.forEach(entity => {
-		if (entity.alive === true) {
-			entity.drawDot();
-		}
-	});
+	drawAliveEntities();
 	playersDeplacements();
 }
 
@@ -39,6 +39,14 @@ let mousePosition = {xPosition: undefined, yPosition: undefined};
 canvas.addEventListener('mousemove', event => {
 	mousePosition = {xPosition: event.clientX, yPosition: event.clientY};
 } );
+
+function drawAliveEntities() {
+	entities.forEach(entity => {
+		if (entity.alive === true) {
+			entity.drawDot();
+		}
+	});
+}
 
 function playersDeplacements() {
 
@@ -57,7 +65,7 @@ function playersDeplacements() {
 function eatDotManager() {
 	entities.forEach(entity => {
 		players.forEach(player => {
-			if(player.xPosition+player.radius === entity.xPosition && player != entity){
+			if(player.xPosition+player.radius === entity.xPosition && player.yPosition+player.radius === entity.yPosition && player != entity){
 				player.eats(entity);
 				console.log(`entity eaten`);
 			}
