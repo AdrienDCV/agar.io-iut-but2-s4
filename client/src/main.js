@@ -31,7 +31,14 @@ generateDots();
 function render() {
 	
 	context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+	
 	drawAliveEntities();
+
+	entities.forEach(entity => {
+		if (entity.alive === true) {
+			entity.drawDot();
+		}
+	});
 	playersDeplacements();
 }
 
@@ -58,6 +65,17 @@ function playersDeplacements() {
 			player.yPosition -= (player.yPosition - mousePosition.yPosition) * 0.0125;
 		}); 		
 		eatDotManager();
+	}
+
+	for(let i=1;i<dots.length;i++){
+		if(dots[i]!=null){
+			
+		}
+
+		if(dots[i].isEaten){
+			dots[i]=null;
+			
+		}
 	}
 	
 }
