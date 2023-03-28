@@ -33,12 +33,7 @@ export default class Dot {
             
         }
         else{
-            if(dotEaten.username!=null){
-            this.radius+=dotEaten.radius/4;
-            }
-            else{
-                this.radius+=dotEaten.radius;
-            }
+            this.radius+=dotEaten.radius;
             dotEaten.isEaten=true;
             console.log('eaten');
         }
