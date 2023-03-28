@@ -5,7 +5,28 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Launch localhost",
+			"name": "Debug server",
+			"type": "node",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"program": "./server/src/index.ts",
+			"runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
+			"args": ["--ignore","./client"],
+			"restart": true,
+			"skipFiles": ["<node_internals>/**"],
+			"env": {
+				"PORT": "8000"
+			}
+		},
+		{
+			"name": "Debug on Chrome",
+			"type": "chrome",
+			"request": "launch",
+			"url": "http://localhost:8000",
+			"webRoot": "${workspaceFolder}"
+		},
+		{
+			"name": "Debug on Firefox",
 			"type": "firefox",
 			"request": "launch",
 			"reAttach": true,
@@ -20,6 +41,6 @@
 				},
 				{ "url": "http://localhost:8000/build", "path": null }
 			]
-		},
+		}
 	]
 }
