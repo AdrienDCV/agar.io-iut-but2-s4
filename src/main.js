@@ -15,13 +15,14 @@ let yDirection = 0;
 let you=new Player(100,400,30, new Color(`#FF0000`), context, 'Parppaing', 0);	
 
 const colors=[new Color('green'),new Color('yellow'),new Color('blue'),new Color('red')];
-let dot1=new Dot(300,300,10,new Color('green'),context);
+let dot1=new Dot(300,300,60,new Color('green'),context);
 you.drawDot();
 dot1.drawDot();
 
 let dots=[]
 dots.push(you);
-for(let i=1; i<10;i++){
+dots.push(dot1);
+for(let i=2; i<10;i++){
     dots[i]=new Dot((Math.random()*canvas.clientWidth),(Math.random()*canvas.clientHeight),10,colors[Math.round(Math.random()*3)],context);
 }
 
@@ -38,9 +39,7 @@ function render() {
 	
 	context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 	playersDeplacements();
-	if(you!=null){
-		you.drawDot();
-	}
+	
 	for(let i=0;i<players.length;i++){
 		if(players[i]!=null){
 			players[i].drawDot();
@@ -53,14 +52,22 @@ function render() {
 		}
 	}
     
-	if(dot1!=null){
-		dot1.drawDot();
-	}
+	
 	
     
 	requestAnimationFrame(render);
 	
 }
+
+
+
+let distance=1;
+function calculDistance(pointA,pointB){
+	return distance=Math.sqrt(Math.pow(pointB.xPosition-pointA.xPosition,2)+Math.pow(pointB.yPosition-pointA.yPosition,2));
+}
+
+
+
 
 let mousePosition = {xPosition: undefined, yPosition: undefined};
 canvas.addEventListener('mousemove', event => {
@@ -78,15 +85,20 @@ function playersDeplacements() {
 		}); 	
 	}
 
-	for(let i=1;i<dots.length;i++){
+	for(let i=0;i<dots.length;i++){
 		if(dots[i]!=null){
-			
+			console.log(calculDistance(players[0],dots[i])<=players[0].radius+dots[i].radius);
+			if(calculDistance(players[0],dots[i])<=players[0].radius+dots[i].radius){
+				
+				players[0].eats(dots[i]);
+			}
+
+			if(dots[i].isEaten){
+				dots[i]=new Dot((Math.random()*canvas.clientWidth),(Math.random()*canvas.clientHeight),10,colors[Math.round(Math.random()*3)],context);				
+			}
 		}
 
-		if(dots[i].isEaten){
-			dots[i]=null;
-			
-		}
+		
 	}
 	
 }
