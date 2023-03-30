@@ -5,6 +5,9 @@ import Player from "./Player.js";
 const canvas = document.querySelector('.gameCanvas');
 const context = canvas.getContext('2d');
 
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
 const player1 = new Player(100,100,50, new Color(`#FF0000`), context, 'Parppaing', 0);
 const players = [];
 players.push(player1);
@@ -38,6 +41,9 @@ for(let i=0;i<players.length;i++){
 function render() {
 	
 	context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+
+	context.save();
+	context.translate(canvas.width / 2-players[0].xPosition, canvas.height / 2-players[0].yPosition );
 	playersDeplacements();
 	
 	for(let i=0;i<players.length;i++){
@@ -46,27 +52,24 @@ function render() {
 		}
 	}
 
-	for(let i=0;i<dots.length;i++){
+	for(let i=1;i<dots.length;i++){
 		if(dots[i]!=null){
 			dots[i].drawDot();
 		}
 	}
     
+
 	
-	
-    
+	context.restore();
+
 	requestAnimationFrame(render);
 	
 }
 
 
-
-let distance=1;
 function calculDistance(pointA,pointB){
-	return distance=Math.sqrt(Math.pow(pointB.xPosition-pointA.xPosition,2)+Math.pow(pointB.yPosition-pointA.yPosition,2));
+	return Math.sqrt(Math.pow(pointB.xPosition-pointA.xPosition,2)+Math.pow(pointB.yPosition-pointA.yPosition,2));
 }
-
-
 
 
 let mousePosition = {xPosition: undefined, yPosition: undefined};
@@ -82,12 +85,14 @@ function playersDeplacements() {
 		players.forEach(player => {			
 			player.xPosition -= (player.xPosition - mousePosition.xPosition) * 0.005;
 			player.yPosition -= (player.yPosition - mousePosition.yPosition) * 0.005;
+
+			
 		}); 	
 	}
 
 	for(let i=0;i<dots.length;i++){
 		if(dots[i]!=null){
-			console.log(calculDistance(players[0],dots[i])<=players[0].radius+dots[i].radius);
+			console.log(players[0].radius);
 			if(calculDistance(players[0],dots[i])<=players[0].radius+dots[i].radius){
 				
 				players[0].eats(dots[i]);
@@ -95,6 +100,10 @@ function playersDeplacements() {
 
 			if(dots[i].isEaten){
 				dots[i]=new Dot((Math.random()*canvas.clientWidth),(Math.random()*canvas.clientHeight),10,colors[Math.round(Math.random()*3)],context);				
+			}
+
+			if(players[0].radius>=500){
+				players[0].radius-=10;
 			}
 		}
 
