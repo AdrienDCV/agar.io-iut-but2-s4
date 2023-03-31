@@ -5,6 +5,7 @@ export default class Dot {
     #xPosition;
     #yPosition;
     #context;
+    #points;
     #isEaten=false;
 
     constructor(xPosition, yPosition, radius, colour, context) {
@@ -13,6 +14,7 @@ export default class Dot {
         this.radius = radius;
         this.colour = colour;
         this.context = context;
+        this.points = radius;
     }
 
     drawDot() {
@@ -26,14 +28,15 @@ export default class Dot {
     }
 
     eats(dotEaten){
-        if(dotEaten.radius>this.radius){
+        if(dotEaten.points>this.points){
             dotEaten.eats(this);
         }
-        else if(dotEaten.radius===this.radius){
+        else if(dotEaten.points===this.points){
             
         }
         else{
-            this.radius+=dotEaten.radius;
+            this.points+=dotEaten.points;
+            this.radius+=dotEaten.points*0.25;
             dotEaten.isEaten=true;
             console.log('eaten');
         }
