@@ -1,11 +1,11 @@
-const path = require('path');
+import path from 'path';
 
-module.exports = {
+export default {
 	// Fichier d'entrée :
-	entry: './src/main.js',
+	entry: './client/src/main.ts',
 	// Fichier de sortie :
 	output: {
-		path: path.resolve(__dirname, './build'),
+		path: path.resolve(process.cwd(), './client/public/build'),
 		filename: 'main.bundle.js',
 		publicPath: '/build/',
 	},
@@ -15,12 +15,16 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.js$/, // tous les fichiers js ...
+				test: /\.(ts|js)$/, // tous les fichiers js ou ts ...
 				exclude: /node_modules/, // ... sauf le dossier node_modules ...
 				use: {
-					// ... seront compilés par babel !
-					loader: 'babel-loader',
+					// ... seront compilés par tsc !
+					loader: 'ts-loader',
+					options: {
+						configFile: 'tsconfig.client.json',
+					},
 				},
+				type: 'javascript/esm', // permet l'utilisation des modules ES6
 			},
 		],
 	},
@@ -28,7 +32,7 @@ module.exports = {
 	devServer: {
 		hot: false, // désactivation hot-reload (inutilisé)
 		static: {
-			directory: './', // racine du serveur http
+			directory: './client/public', // racine du serveur http
 			watch: {
 				// optimisation live-reload
 				ignored: 'node_modules',
