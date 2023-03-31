@@ -2,8 +2,6 @@ import express from 'express';
 import http from 'http';
 import { Server as IOServer } from 'socket.io';
 import addWebpackMiddleware from './addWebpackMiddleware';
-import Author from './domain/Author';
-import MessagesRepository from './domain/MessagesRepository';
 
 const app = express(),
 	httpServer = http.createServer(app);
