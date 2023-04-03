@@ -73,7 +73,7 @@ function render(): void {
 	//);
 
 	context.translate(canvas.clientWidth / 2, canvas.clientHeight / 2);
-	const scaleValue = (5 / player.getRadius()) * 25;
+	const scaleValue = (10 / player.getRadius()) * 25;
 	context.scale(scaleValue, scaleValue);
 	context.translate(-player.xPosition, -player.yPosition);
 
