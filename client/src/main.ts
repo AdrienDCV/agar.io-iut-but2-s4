@@ -40,7 +40,7 @@ const colors: string[] = [
 	'#FF6C00',
 ];
 
-entities.push(player);
+//entities.push(player);
 players.push(player);
 
 const maxSize = 200;
@@ -65,20 +65,17 @@ function render(): void {
 
 	// //rescale
 
-	// if (player.getRadius() >= maxSize) {
-	// 	player.setRadius(player.getRadius() - 10);
-	// 	for (let i: number = 0; i < players.length; i++) {
-	// 		if (player[i].getRadius() > 50) {
-	// 			players[i].setRadius(players[i].getRadius() - 10);
-	// 		}
-	// 	}
-	// }
-
 	context.save();
-	context.translate(
-		canvas.width / 2 - player.getXPosition(),
-		canvas.height / 2 - player.getYPosition()
-	);
+
+	//context.translate(
+	//	canvas.width / 2 - player.getXPosition(),
+	//	canvas.height / 2 - player.getYPosition()
+	//);
+
+	context.translate(canvas.clientWidth / 2, canvas.clientHeight / 2);
+	const scaleValue = (5 / player.getRadius()) * 25;
+	context.scale(scaleValue, scaleValue);
+	context.translate(-player.xPosition, -player.yPosition);
 
 	drawAliveEntities();
 	playersDeplacements();
@@ -101,6 +98,7 @@ function drawAliveEntities(): void {
 			entity.drawDot();
 		}
 	});
+	player.drawDot();
 }
 
 function playersDeplacements(): void {
@@ -134,6 +132,8 @@ function eatDotManager(): void {
 			) {
 				player.eats(foods[i]);
 				foods[i] = generateDot();
+				entities[i] = foods[i];
+				console.log(player.getRadius());
 			}
 		}
 	}
