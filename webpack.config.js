@@ -41,4 +41,8 @@ export default {
 		port: 8000,
 		historyApiFallback: true, // gestion deeplinking
 	},
+	resolve: {
+		// Ajoute le support de l'extension `.ts`
+		extensions: ['.ts', '.js'],
+	},
 };
