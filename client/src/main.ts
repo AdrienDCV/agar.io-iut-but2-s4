@@ -1,10 +1,12 @@
-import { Socket } from 'socket.io';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 
 import Player from '../../common/Player';
 import Dot from '../../common/Dot';
 
-// const socket: Socket = io();
+import {
+	ClientToServerEvents,
+	ServerToClientEvents,
+} from '../../common/socketInterfaces';
 
 const canvas: HTMLCanvasElement = document.querySelector(
 	'.gameCanvas'
@@ -13,23 +15,30 @@ const context: CanvasRenderingContext2D = canvas.getContext(
 	'2d'
 ) as CanvasRenderingContext2D;
 
+let entities: Dot[] = [];
+let players: Player[] = [];
+let foods: Dot[] = [];
+
+let playerLocal: Player;
+
+const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
+socket.emit('join', 'Adrien', '#FF0000', context);
+
+socket.on('sendPlayers', newPlayers => {
+	players = newPlayers;
+	newPlayers.forEach(newPlayer => {
+		entities.push(newPlayer);
+	});
+});
+
+socket.on('sendLocalPlayer', player => {
+	playerLocal = player;
+});
+
+socket.on('navy', string => console.log(string));
+
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-
-const entities: Dot[] = [];
-const players: Player[] = [];
-const foods: Dot[] = [];
-
-const player: Player = new Player(
-	100,
-	100,
-	50,
-	`#FF0000`,
-	true,
-	context,
-	'Parppaing',
-	'25052003'
-);
 
 const colors: string[] = [
 	'#00FF15',
@@ -39,9 +48,6 @@ const colors: string[] = [
 	'#FCFF00',
 	'#FF6C00',
 ];
-
-entities.push(player);
-players.push(player);
 
 const maxSize = 200;
 
@@ -61,30 +67,26 @@ function generateDots(): void {
 }
 
 function render(): void {
+	if (players != null) {
+		entities.forEach(entity => {
+			if (entity.isAlive() === true) {
+				entity.drawDot();
+			}
+		});
+		// // playersDeplacements();
+		// context.restore();
+		console.log(players.length);
+	}
 	context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 
-	// //rescale
-
-	// if (player.getRadius() >= maxSize) {
-	// 	player.setRadius(player.getRadius() - 10);
-	// 	for (let i: number = 0; i < players.length; i++) {
-	// 		if (player[i].getRadius() > 50) {
-	// 			players[i].setRadius(players[i].getRadius() - 10);
-	// 		}
-	// 	}
-	// }
-
-	context.save();
-	context.translate(
-		canvas.width / 2 - player.getXPosition(),
-		canvas.height / 2 - player.getYPosition()
-	);
-
-	drawAliveEntities();
-	playersDeplacements();
-
-	context.restore();
+	// context.save();
+	// context.translate(
+	// 	canvas.width / 2 - player.getXPosition(),
+	// 	canvas.height / 2 - player.getYPosition()
+	// );
+	requestAnimationFrame(render);
 }
+render();
 
 const mousePosition = {
 	xPosition: 0,
@@ -103,42 +105,42 @@ function drawAliveEntities(): void {
 	});
 }
 
-function playersDeplacements(): void {
-	if (
-		mousePosition.xPosition != undefined &&
-		mousePosition.yPosition != undefined
-	) {
-		let newXPosition: number =
-			(player.getXPosition() - mousePosition.xPosition) * 0.0125;
-		player.xPosition -= newXPosition;
+// function playersDeplacements(): void {
+// 	if (
+// 		mousePosition.xPosition != undefined &&
+// 		mousePosition.yPosition != undefined
+// 	) {
+// 		let newXPosition: number =
+// 			(player.getXPosition() - mousePosition.xPosition) * 0.0125;
+// 		player.xPosition -= newXPosition;
 
-		let newYPosition: number =
-			(player.getYPosition() - mousePosition.yPosition) * 0.0125;
-		player.yPosition -= newYPosition;
-		eatDotManager();
-	}
-}
+// 		let newYPosition: number =
+// 			(player.getYPosition() - mousePosition.yPosition) * 0.0125;
+// 		player.yPosition -= newYPosition;
+// 		eatDotManager();
+// 	}
+// }
 
-function calculDistanceBetweenPoints(pointA: Dot, pointB: Dot) {
-	const xDistance: number = pointB.getXPosition() - pointA.getXPosition();
-	const yDistance: number = pointB.getYPosition() - pointA.getYPosition();
-	return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
-}
+// function calculDistanceBetweenPoints(pointA: Dot, pointB: Dot) {
+// 	const xDistance: number = pointB.getXPosition() - pointA.getXPosition();
+// 	const yDistance: number = pointB.getYPosition() - pointA.getYPosition();
+// 	return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+// }
 
-function eatDotManager(): void {
-	for (let i: number = 0; i < foods.length; i++) {
-		if (foods[i] != null) {
-			if (
-				calculDistanceBetweenPoints(player, foods[i]) <=
-				player.getRadius() + foods[i].getRadius()
-			) {
-				player.eats(foods[i]);
-				foods[i] = generateDot();
-			}
-		}
-	}
-}
+// function eatDotManager(): void {
+// 	for (let i: number = 0; i < foods.length; i++) {
+// 		if (foods[i] != null) {
+// 			if (
+// 				calculDistanceBetweenPoints(player, foods[i]) <=
+// 				player.getRadius() + foods[i].getRadius()
+// 			) {
+// 				player.eats(foods[i]);
+// 				foods[i] = generateDot();
+// 			}
+// 		}
+// 	}
+// }
 
 generateDots();
 
-setInterval(render, 1000 / 60);
+// setInterval(render, 1000 / 60);

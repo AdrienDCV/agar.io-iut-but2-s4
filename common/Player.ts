@@ -27,6 +27,10 @@ export default class Player extends Dot {
 		this.username = username;
 	}
 
+	setId(id: string) {
+		this.id = id;
+	}
+
 	getId() {
 		return this.id;
 	}
