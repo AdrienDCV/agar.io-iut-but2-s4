@@ -3,7 +3,7 @@ import { io } from 'socket.io-client';
 
 import Player from '../../common/Player';
 import Dot from '../../common/Dot';
-
+import Router from './Router';
 // const socket: Socket = io();
 
 const canvas: HTMLCanvasElement = document.querySelector(
@@ -23,7 +23,7 @@ const foods: Dot[] = [];
 const player: Player = new Player(
 	100,
 	100,
-	50,
+	5,
 	`#FF0000`,
 	true,
 	context,
@@ -73,7 +73,7 @@ function render(): void {
 	//);
 
 	context.translate(canvas.clientWidth / 2, canvas.clientHeight / 2);
-	const scaleValue = (10 / player.getRadius()) * 25;
+	const scaleValue = (5 / player.getRadius()) * 25;
 	context.scale(scaleValue, scaleValue);
 	context.translate(-player.xPosition, -player.yPosition);
 
@@ -115,6 +115,10 @@ function playersDeplacements(): void {
 		player.yPosition -= newYPosition;
 		eatDotManager();
 	}
+
+	if (!player.isAlive()) {
+		document.location.href = '/gameover.html';
+	}
 }
 
 function calculDistanceBetweenPoints(pointA: Dot, pointB: Dot) {
@@ -131,8 +135,10 @@ function eatDotManager(): void {
 				player.getRadius() + foods[i].getRadius()
 			) {
 				player.eats(foods[i]);
-				foods[i] = generateDot();
-				entities[i] = foods[i];
+				if (!foods[i].isAlive()) {
+					foods[i] = generateDot();
+					entities[i] = foods[i];
+				}
 				console.log(player.getRadius());
 			}
 		}

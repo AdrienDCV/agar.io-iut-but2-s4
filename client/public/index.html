@@ -1,24 +1,20 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<!---<link rel="stylesheet" type="text/css" href="css/main.css"/>--->
-
-	<title>JSAÉ</title>
-
-	<style>
-		canvas {
-			background-color: white;
-			border: 3px dashed #777;
-		}
-	
-	</style>
-	<script type="module" src="build/main.bundle.js" defer></script>
-</head>
-<body>
-	<h1><em>JSAÉ</em> / TP1 - Canvas</h1>
-	<canvas class="gameCanvas" width="1000" height="450"></canvas>
-</body>
-</html>
+<h1>Accueil</h1>
+            <form action="./jeu.html">
+                <div class="pseudo">
+                    <label for="pseudo" class="pseudo-title">Pseudo</label>
+                    <input type="text" class="input-pseudo" id="pseudo" name="pseudo" value="">
+                </div>
+                <div class="color">
+                    <label for="couleur" class="coulor-title">Couleur</label>
+                    <input type="color" class="input-coulor" id="color" name="color" value="">
+                </div>
+                <button type="submit" class="jouer">Jouer</button>
+            </form>
+            <form action="./credits.html">
+                <button type="submit">Credits</button>
+             </form>
+             <form action="./gameover.html">
+                <button type="submit">Test Game Over</button>
+             </form>
+             
+             

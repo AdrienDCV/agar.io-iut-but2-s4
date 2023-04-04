@@ -48,6 +48,8 @@ export default class Dot {
 			this.setPoints(this.getPoints() + dotToEat.getPoints());
 			this.setRadius(this.radius + dotToEat.getRadius() * 0.25);
 			dotToEat.setAlive(false);
+		} else if (dotToEat.getRadius() > this.radius) {
+			dotToEat.eats(this);
 		}
 	}
 
