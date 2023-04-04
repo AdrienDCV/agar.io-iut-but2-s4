@@ -7,6 +7,7 @@ import {
 	ClientToServerEvents,
 	ServerToClientEvents,
 } from '../../common/socketInterfaces';
+import Router from './Router';
 
 const canvas: HTMLCanvasElement = document.querySelector(
 	'.gameCanvas'
@@ -68,6 +69,7 @@ function generateDots(): void {
 
 function render(): void {
 	context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+	context.save();
 
 	if (players != null) {
 		drawAliveEntities();
@@ -77,6 +79,14 @@ function render(): void {
 	}
 
 	requestAnimationFrame(render);
+
+	//context.translate(
+	// context.translate(canvas.clientWidth / 2, canvas.clientHeight / 2);
+	// const scaleValue = (5 / player.getRadius()) * 25;
+	// context.scale(scaleValue, scaleValue);
+	// context.translate(-player.xPosition, -player.yPosition);
+
+	context.restore();
 }
 render();
 
@@ -111,6 +121,10 @@ function drawAliveEntities(): void {
 // 		player.yPosition -= newYPosition;
 // 		eatDotManager();
 // 	}
+
+// 	if (!player.isAlive()) {
+// 		document.location.href = '/gameover.html';
+// 	}
 // }
 
 // function calculDistanceBetweenPoints(pointA: Dot, pointB: Dot) {
@@ -127,7 +141,11 @@ function drawAliveEntities(): void {
 // 				player.getRadius() + foods[i].getRadius()
 // 			) {
 // 				player.eats(foods[i]);
-// 				foods[i] = generateDot();
+// 				if (!foods[i].isAlive()) {
+// 					foods[i] = generateDot();
+// 					entities[i] = foods[i];
+// 				}
+// 				console.log(player.getRadius());
 // 			}
 // 		}
 // 	}
