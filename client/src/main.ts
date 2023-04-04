@@ -67,23 +67,15 @@ function generateDots(): void {
 }
 
 function render(): void {
+	context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+
 	if (players != null) {
-		entities.forEach(entity => {
-			if (entity.isAlive() === true) {
-				entity.drawDot();
-			}
-		});
-		// // playersDeplacements();
+		drawAliveEntities();
+		// playersDeplacements();
 		// context.restore();
 		console.log(players.length);
 	}
-	context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 
-	// context.save();
-	// context.translate(
-	// 	canvas.width / 2 - player.getXPosition(),
-	// 	canvas.height / 2 - player.getYPosition()
-	// );
 	requestAnimationFrame(render);
 }
 render();
@@ -99,7 +91,7 @@ canvas.addEventListener('mousemove', event => {
 
 function drawAliveEntities(): void {
 	entities.forEach(entity => {
-		if (entity.isAlive() === true) {
+		if (entity.isAlive()) {
 			entity.drawDot();
 		}
 	});
@@ -142,5 +134,4 @@ function drawAliveEntities(): void {
 // }
 
 generateDots();
-
-// setInterval(render, 1000 / 60);
+setInterval(render, 1000 / 60);
