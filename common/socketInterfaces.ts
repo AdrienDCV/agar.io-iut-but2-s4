@@ -5,6 +5,8 @@ export interface ServerToClientEvents {
 	sendPlayers: (playerList: Player[]) => void;
 	navy: (string: string) => void;
 	sendGameAssets: (entitiesList: Dot[], playersList: Player[]) => void;
+	sendNewPlayerPosition: (newXPosition: number, newYPosition: number) => void;
+	updateEntitiesList: (entitiesList: Dot[]) => void;
 }
 
 export interface ClientToServerEvents {
@@ -14,7 +16,7 @@ export interface ClientToServerEvents {
 		colour: string,
 		context: CanvasRenderingContext2D
 	) => void;
-	deplacements: (
+	sendMousePosition: (
 		mouseXPosition: number,
 		mouseYPosition: number,
 		playerId: string

@@ -30,8 +30,8 @@ let entitiesList: Dot[] = [];
 let playersList: Player[] = [];
 let foodsList: Dot[] = [];
 
-const canvasWidth: number = 1000;
-const canvasHeight: number = 500;
+const canvasWidth: number = 1920;
+const canvasHeight: number = 1080;
 let canvasContext: CanvasRenderingContext2D;
 
 generateDots();
@@ -60,16 +60,22 @@ io.on('connection', socket => {
 		io.emit('sendGameAssets', entitiesList, playersList);
 	});
 
-	socket.on('deplacements', (mouseXPosition, mouseYPosition, playerId) => {
+	socket.on('sendMousePosition', (mouseXPosition, mouseYPosition, playerId) => {
 		const player: Player = getPlayer(playerId);
 
-		let newXPosition: number = (player.getXPosition() - mouseXPosition) * 0.001;
+		if (mouseXPosition != 0 && mouseYPosition != 0) {
+			console.log(player.getUsername());
+			player.xPosition -= (player.getXPosition() - mouseXPosition) * 0.025;
+			player.yPosition -= (player.getYPosition() - mouseYPosition) * 0.025;
 
-		let newYPosition: number = (player.getYPosition() - mouseYPosition) * 0.001;
-		// eatDotManager();
+			socket.emit('sendNewPlayerPosition', player.xPosition, player.yPosition);
+		}
+
+		eatDotManager(playerId);
 	});
 
 	socket.on('disconnect', () => {
+		removeDisconnectedPlayer(socket.id);
 		console.log(`Déconnexion du client ${socket.id}`);
 	});
 });
@@ -79,13 +85,30 @@ httpServer.listen(port, () => {
 	console.log(`Server running at http://localhost:${port}/`);
 });
 
-function getPlayer(playerId: string): Player {
+function removeDisconnectedPlayer(playerId: string) {
 	playersList.forEach(player => {
 		if (player.getId() === playerId) {
-			return player;
+			playersList.splice(playersList.indexOf(player), 1);
 		}
 	});
-	throw new Error(`No player found for id : ${playerId}`);
+}
+
+function getPlayer(playerId: string): Player {
+	for (const player of playersList) {
+		if (player.getId() == playerId) {
+			return player;
+		}
+	}
+	return new Player(
+		0,
+		0,
+		0,
+		'',
+		false,
+		canvasContext,
+		'NULLPLAYER',
+		'NULLPLAYER'
+	);
 }
 
 function generateDot(): Dot {
@@ -118,6 +141,8 @@ function eatDotManager(playerId: string): void {
 			}
 		}
 	}
+
+	io.emit('updateEntitiesList', entitiesList);
 }
 
 function drawAliveEntities(): void {

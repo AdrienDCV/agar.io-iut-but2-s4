@@ -44,7 +44,6 @@ export default class Dot {
 
 	eats(dotToEat: Dot) {
 		if (dotToEat.getRadius() < this.radius) {
-			console.log('passe ici !');
 			this.setPoints(this.getPoints() + dotToEat.getPoints());
 			this.setRadius(this.radius + dotToEat.getRadius() * 0.25);
 			dotToEat.setAlive(false);

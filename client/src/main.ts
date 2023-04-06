@@ -36,20 +36,16 @@ const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
 socket.emit('join', 'Adrien', '#FF0000', context);
 
 socket.on('sendGameAssets', (entitiesListServ, playersListServ) => {
-	let entity: Dot;
-	entitiesListServ.forEach(entityServ => {
-		entity = new Dot(
-			entityServ.xPosition,
-			entityServ.yPosition,
-			entityServ.radius,
-			entityServ.colour,
-			1,
-			entityServ.alive,
-			context
-		);
-		entitiesList.push(entity);
-	});
+	receivingEntities(entitiesListServ);
+	receivingPlayers(playersListServ);
+});
 
+// socket.on('navy', string => console.log(string));
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+function receivingPlayers(playersListServ: Player[]) {
 	let player: Player;
 	playersListServ.forEach(playerServ => {
 		player = new Player(
@@ -64,36 +60,65 @@ socket.on('sendGameAssets', (entitiesListServ, playersListServ) => {
 		);
 		playersList.push(player);
 		entitiesList.push(player);
-		if (player.id === socket.id) {
-			playerLocal = player;
-		}
+		getLocalPlayer(player);
 	});
-});
+}
 
-socket.on('navy', string => console.log(string));
+function getLocalPlayer(player: Player) {
+	if (player.id === socket.id) {
+		playerLocal = player;
+	}
+}
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function receivingEntities(entitiesListServ: Dot[]) {
+	let entity: Dot;
+	entitiesListServ.forEach(entityServ => {
+		entity = new Dot(
+			entityServ.xPosition,
+			entityServ.yPosition,
+			entityServ.radius,
+			entityServ.colour,
+			1,
+			entityServ.alive,
+			context
+		);
+		entitiesList.push(entity);
+	});
+}
 
 function render(): void {
 	context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 	context.save();
 
 	if (playerLocal != null) {
+		context.translate(canvas.clientWidth / 2, canvas.clientHeight / 2);
+		const scaleValue = (5 / playerLocal.getRadius()) * 25;
+		context.scale(scaleValue, scaleValue);
+		context.translate(-playerLocal.getXPosition(), -playerLocal.getYPosition());
+
 		drawAliveEntities();
-		rescaleContextDependingPlayerSize();
+		sendingMousePosition();
+		playerDeplacements();
 	}
 
-	requestAnimationFrame(render);
-
+	updateEntitiesList();
 	context.restore();
 }
 
-function rescaleContextDependingPlayerSize() {
-	context.translate(canvas.clientWidth / 2, canvas.clientHeight / 2);
-	const scaleValue = (5 / playerLocal.getRadius()) * 25;
-	context.scale(scaleValue, scaleValue);
-	context.translate(-playerLocal.getXPosition(), -playerLocal.getYPosition());
+function playerDeplacements() {
+	socket.on('sendNewPlayerPosition', (newXPosition, newYPosition) => {
+		playerLocal.xPosition = newXPosition;
+		playerLocal.yPosition = newYPosition;
+	});
+}
+
+function sendingMousePosition() {
+	socket.emit(
+		'sendMousePosition',
+		mousePosition.xPosition,
+		mousePosition.yPosition,
+		playerLocal.getId()
+	);
 }
 
 function drawAliveEntities(): void {
@@ -104,6 +129,10 @@ function drawAliveEntities(): void {
 	});
 }
 
-// generateDots();
-render();
+function updateEntitiesList() {
+	socket.on('updateEntitiesList', entitiesListServ => {
+		receivingEntities(entitiesListServ);
+	});
+}
+
 setInterval(render, 1000 / 60);
