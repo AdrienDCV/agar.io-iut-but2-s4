@@ -1,8 +1,8 @@
 import Dot from './Dot';
 
 export default class Player extends Dot {
-	private username: string;
-	private id: string;
+	username: string;
+	id: string;
 
 	constructor(
 		xPosition: number,

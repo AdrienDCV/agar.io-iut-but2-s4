@@ -1,11 +1,11 @@
 export default class Dot {
-	private colour: string;
-	private radius: number;
-	private alive: boolean;
-	private points: number;
+	colour: string;
+	radius: number;
+	alive: boolean;
+	points: number;
 	xPosition: number;
 	yPosition: number;
-	private context: CanvasRenderingContext2D;
+	context: CanvasRenderingContext2D;
 
 	constructor(
 		xPosition: number,
