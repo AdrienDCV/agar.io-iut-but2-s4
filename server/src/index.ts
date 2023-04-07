@@ -34,6 +34,8 @@ const canvasWidth: number = 1920;
 const canvasHeight: number = 1080;
 let canvasContext: CanvasRenderingContext2D;
 
+/* ################################################## */
+
 generateDots();
 io.on('connection', socket => {
 	console.log(`Connexion de l'utilisateur : ${socket.id}`);
@@ -68,9 +70,9 @@ io.on('connection', socket => {
 			player.yPosition -= (player.getYPosition() - mouseYPosition) * 0.025;
 
 			socket.emit('sendNewPlayerPosition', player.xPosition, player.yPosition);
+			eatDotManager(playerId);
+			io.emit('updateEntitiesList', entitiesList);
 		}
-
-		// eatDotManager(playerId);
 	});
 
 	socket.on('disconnect', () => {
@@ -84,12 +86,16 @@ httpServer.listen(port, () => {
 	console.log(`Server running at http://localhost:${port}/`);
 });
 
+/* ################################################## */
+
 function removeDisconnectedPlayer(playerId: string) {
 	playersList.forEach(player => {
 		if (player.getId() === playerId) {
 			playersList.splice(playersList.indexOf(player), 1);
+			entitiesList.splice(playersList.indexOf(player), 1);
 		}
 	});
+	io.emit('updateEntitiesList', entitiesList);
 }
 
 function getPlayer(playerId: string): Player {
@@ -140,8 +146,6 @@ function eatDotManager(playerId: string): void {
 			}
 		}
 	}
-
-	io.emit('updateEntitiesList', entitiesList);
 }
 
 function drawAliveEntities(): void {

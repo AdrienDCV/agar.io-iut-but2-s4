@@ -46,6 +46,7 @@ socket.on('sendGameAssets', (entitiesListServ, playersListServ) => {
 
 function receivingPlayers(playersListServ: Player[]) {
 	let player: Player;
+	playersList = [];
 	playersListServ.forEach(playerServ => {
 		player = new Player(
 			playerServ.xPosition,
@@ -71,6 +72,7 @@ function getLocalPlayer(player: Player) {
 
 function receivingEntities(entitiesListServ: Dot[]) {
 	let entity: Dot;
+	entitiesList = [];
 	entitiesListServ.forEach(entityServ => {
 		entity = new Dot(
 			entityServ.xPosition,
