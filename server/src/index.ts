@@ -64,14 +64,13 @@ io.on('connection', socket => {
 		const player: Player = getPlayer(playerId);
 
 		if (mouseXPosition != 0 && mouseYPosition != 0) {
-			console.log(player.getUsername());
 			player.xPosition -= (player.getXPosition() - mouseXPosition) * 0.025;
 			player.yPosition -= (player.getYPosition() - mouseYPosition) * 0.025;
 
 			socket.emit('sendNewPlayerPosition', player.xPosition, player.yPosition);
 		}
 
-		eatDotManager(playerId);
+		// eatDotManager(playerId);
 	});
 
 	socket.on('disconnect', () => {

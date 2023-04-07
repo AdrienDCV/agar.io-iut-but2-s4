@@ -12,6 +12,10 @@ import Router from './Router';
 const canvas: HTMLCanvasElement = document.querySelector(
 	'.gameCanvas'
 ) as HTMLCanvasElement;
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
 const context: CanvasRenderingContext2D = canvas.getContext(
 	'2d'
 ) as CanvasRenderingContext2D;
@@ -39,11 +43,6 @@ socket.on('sendGameAssets', (entitiesListServ, playersListServ) => {
 	receivingEntities(entitiesListServ);
 	receivingPlayers(playersListServ);
 });
-
-// socket.on('navy', string => console.log(string));
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
 
 function receivingPlayers(playersListServ: Player[]) {
 	let player: Player;
@@ -91,10 +90,8 @@ function render(): void {
 	context.save();
 
 	if (playerLocal != null) {
-		context.translate(canvas.clientWidth / 2, canvas.clientHeight / 2);
-		const scaleValue = (5 / playerLocal.getRadius()) * 25;
-		context.scale(scaleValue, scaleValue);
-		context.translate(-playerLocal.getXPosition(), -playerLocal.getYPosition());
+		console.log(playersList.length);
+		rescaleContextDependingPlayerSize();
 
 		drawAliveEntities();
 		sendingMousePosition();
@@ -102,7 +99,15 @@ function render(): void {
 	}
 
 	updateEntitiesList();
+
 	context.restore();
+}
+
+function rescaleContextDependingPlayerSize() {
+	context.translate(canvas.clientWidth / 2, canvas.clientHeight / 2);
+	const scaleValue = (5 / playerLocal.getRadius()) * 25;
+	context.scale(scaleValue, scaleValue);
+	context.translate(-playerLocal.getXPosition(), -playerLocal.getYPosition());
 }
 
 function playerDeplacements() {
