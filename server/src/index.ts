@@ -96,6 +96,7 @@ function removeDisconnectedPlayer(playerId: string) {
 		}
 	});
 	io.emit('updateEntitiesList', entitiesList);
+	io.emit('updatePlayersList', playersList);
 }
 
 function getPlayer(playerId: string): Player {
@@ -124,8 +125,8 @@ function generateDot(): Dot {
 }
 
 function calculDistanceBetweenPoints(pointA: Dot, pointB: Dot) {
-	const xDistance: number = pointB.getYPosition() - pointA.getXPosition();
-	const yDistance: number = pointB.getYPosition() - pointA.getXPosition();
+	const xDistance: number = pointB.getXPosition() - pointA.getXPosition();
+	const yDistance: number = pointB.getYPosition() - pointA.getYPosition();
 	return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
 }
 
@@ -136,7 +137,7 @@ function eatDotManager(playerId: string): void {
 		if (foodsList[i] != null) {
 			if (
 				calculDistanceBetweenPoints(player, foodsList[i]) <=
-				player.getRadius() + foodsList[i].getRadius()
+				player.radius + foodsList[i].radius
 			) {
 				player.eats(foodsList[i]);
 				if (!foodsList[i].isAlive()) {

@@ -7,6 +7,7 @@ export interface ServerToClientEvents {
 	sendGameAssets: (entitiesList: Dot[], playersList: Player[]) => void;
 	sendNewPlayerPosition: (newXPosition: number, newYPosition: number) => void;
 	updateEntitiesList: (entitiesList: Dot[]) => void;
+	updatePlayersList: (playersList: Player[]) => void;
 }
 
 export interface ClientToServerEvents {

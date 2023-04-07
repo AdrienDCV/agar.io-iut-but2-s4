@@ -101,6 +101,7 @@ function render(): void {
 	}
 
 	updateEntitiesList();
+	updatePlayersList();
 
 	context.restore();
 }
@@ -139,6 +140,12 @@ function drawAliveEntities(): void {
 function updateEntitiesList() {
 	socket.on('updateEntitiesList', entitiesListServ => {
 		receivingEntities(entitiesListServ);
+	});
+}
+
+function updatePlayersList() {
+	socket.on('updatePlayersList', playersListServ => {
+		receivingPlayers(playersListServ);
 	});
 }
 
