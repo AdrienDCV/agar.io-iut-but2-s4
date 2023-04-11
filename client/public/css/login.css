@@ -101,15 +101,26 @@ body {
 }
 
 .creditsLink {
+
     width: fit-content;
     height: fit-content;
     border-radius: 10px;
     margin-top: 5%;
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.115);
+
+}
+
+.creditsLink > a {
+
+    text-decoration: none;
+    color: black;
+
 }
 
 .creditsLink:visited {
+
     text-decoration: none;
     color: black
+
 }
