@@ -1,0 +1,73 @@
+@font-face {
+    font-family: MotivaSans;
+    src: url("./fonts/MotivaSans-Regular.ttf");
+}
+
+*,
+*:before,
+*:after{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: MotivaSans;
+}
+
+.titleCreditsContainer {
+    text-align: center;
+}
+
+.creditsContainer {
+
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+
+    width: max-content;
+    height: max-content;
+
+    padding: 10px;
+
+    background-color: white;
+    border: solid black 2px;
+    border-radius: 10px;    
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.contentCreditsContainer {
+
+    margin-top: 2%;
+
+    width: max-content;
+    height: max-content;
+
+    padding: 25px;
+
+}
+
+.loginLink {
+    width: fit-content;
+    height: fit-content;
+    border-radius: 10px;
+    margin-top: 5%;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.115);
+}
+
+.loginLink > a {
+    text-decoration: none;
+    color: black;
+}
+
+.loginLink:visited {
+    text-decoration: none;
+    color: black
+}
+
+h2 {
+    text-decoration: underline;
+}

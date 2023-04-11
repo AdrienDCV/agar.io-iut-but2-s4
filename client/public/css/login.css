@@ -1,0 +1,115 @@
+@font-face {
+    font-family: MotivaSans;
+    src: url("./fonts/MotivaSans-Regular.ttf");
+}
+
+
+*,
+*:before,
+*:after{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: MotivaSans;
+}
+
+body {
+    text-align: center;
+}
+
+.loginContainer {
+
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+   
+    border-radius: 10px;    
+
+    width: 20%;
+    height: max-content;
+
+    padding: 10px;
+
+    background-color: white;
+    border: solid black 2px;
+}
+
+.title > h1 {
+    font-size: 45px;
+}
+
+.title > em {
+    font-size: small;
+}
+
+.title > em > a {
+    text-decoration: none;
+    color: blue;
+}
+
+.title > em > a:visited {
+    text-decoration: none;
+    color: blue;
+}
+
+.loginForm {
+    margin-top: 10%;
+}
+
+.label-title {
+    display: block;
+}
+
+.input-pseudo {
+    height: 50px;
+    width: 65%;
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+    border: solid black 1px;    
+}
+
+.input-colour {
+    width: 80px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.loginForm > .pseudo-from-cell, .color-form-cell{
+    margin-top: 10%;
+}
+
+.playBtn {
+
+    margin-top: 50px;
+    width: 55%;
+    background-color: #6363633b;
+    color: #080710;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none; 
+}
+
+.playBtn:hover {
+    background-color: #9898983b;
+}
+
+.creditsLink {
+    width: fit-content;
+    height: fit-content;
+    border-radius: 10px;
+    margin-top: 5%;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.115);
+}
+
+.creditsLink:visited {
+    text-decoration: none;
+    color: black
+}

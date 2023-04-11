@@ -1,14 +1,61 @@
-<h1>Raga.oi</h1>
-<form action="./jeu.html">
-    <div class="pseudo">
-        <label for="pseudo" class="pseudo-title">Pseudo</label>
-        <input type="text" class="input-pseudo" id="pseudo" name="pseudo" value="">
-    </div>
-    <div class="color">
-        <label for="couleur" class="coulor-title">Couleur</label>
-        <input type="color" class="input-coulor" id="color" name="color" value="">
-    </div>
-    <button type="submit" class="jouer">Jouer</button>
-</form>
-            
-<a href="./credits.html">Crédits</a>
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!---<link rel="stylesheet" type="text/css" href="css/main.css"/>--->
+
+	<link rel="stylesheet" type="text/css" href="./css/login.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/credits.css"/>
+
+	<title>JSAÉ</title>
+
+	<style>
+		canvas {
+			background-color: white;
+			border: 3px dashed #777;
+		}
+	
+	</style>
+	<script type="module" src="build/main.bundle.js" defer></script>
+</head>
+<body>
+
+	<section class="loginContainer">
+		<div class="title">
+			<h1>Raga.oi</h1>
+			<em style="white-space: pre-line;">Un jeu développé par 
+				<a href="https://gitlab.univ-lille.fr/adrien.dacostaveiga.etu">Adrien DA COSTA VEIGA</a> 
+						& 
+				<a href="https://gitlab.univ-lille.fr/ylann.gronnier.etu">Ylann GRONNIER</a>
+			</em>
+		</div>
+	
+		<div class="loginForm-container">
+			<form class="loginForm" action="./jeu.html">
+				<div class="pseudo-form-cell">
+					<label for="pseudo" class="label-title">Pseudo</label>
+					<input type="text" class="input-pseudo" id="pseudo" name="pseudo" placeholder="Votre pseudo...">
+				</div>
+				<div class="color-form-cell">
+					<label for="couleur" class="label-title">Couleur</label>
+					<input type="color" class="input-colour" id="colour" name="color" value="">
+				</div>
+				<button type="submit" class="playBtn">Jouer</button>
+			</form>
+		</div>
+		
+		<div class="creditsLink">
+			<a href="./credits.html">Crédits</a>
+		</div>
+	</section>
+	
+	<section class="gameContainer" style="display: none;">
+		<div class="gameCanvas">
+			<canvas class="gameCanvas" width="1000" height="450"></canvas>
+		</div>
+	</section>
+	
+</body>
+</html>
