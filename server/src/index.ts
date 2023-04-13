@@ -76,13 +76,14 @@ io.on('connection', socket => {
 		const xCenter = frontConfig.width / 2;
 		const yCenter = frontConfig.height / 2;
 		if (mouseXPosition != 0 && mouseYPosition != 0) {
+			const progressionRatio = 0.015;
 			player.xPosition -=
 				(xCenter - mouseXPosition) *
-				0.015 *
+				progressionRatio *
 				(frontConfig.height / frontConfig.width);
 			player.yPosition -=
 				(yCenter - mouseYPosition) *
-				0.015 *
+				progressionRatio *
 				(frontConfig.width / frontConfig.height);
 
 			socket.emit('sendNewPlayerPosition', player.xPosition, player.yPosition);
