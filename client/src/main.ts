@@ -7,12 +7,6 @@ import {
 	ClientToServerEvents,
 	ServerToClientEvents,
 } from '../../common/socketInterfaces';
-import Router from './Router';
-
-// import CreditsView from './CreditsView';
-// import GameView from './GameView';
-// import GameOverView from './GameOverView';
-// import LoginView from './LoginView';
 
 const canvas: HTMLCanvasElement = document.querySelector(
 	'.game .gameCanvas'
@@ -52,20 +46,6 @@ const creditsView = document.querySelector(
 creditsView.style.display = 'none';
 gameOverView.style.display = 'none';
 leaderboard.style.display = 'none';
-
-// // mise en place du Router
-// const routes = [
-// 	{ path: '/', view: loginView },
-// 	{ path: '/game', view: gameView },
-// 	{ path: '/gameOver', view: gameOverView },
-// 	{ path: '/credits', view: creditsView },
-// ];
-// Router.routes = routes;
-
-// // chargement de la vue initiale selon l'URL demandée par l'utilisateur.rice (Deep linking)
-// Router.navigate(window.location.pathname, true);
-// // gestion des boutons précédent/suivant du navigateur (History API)
-// window.onpopstate = () => Router.navigate(document.location.pathname, true);
 
 const creditsLink = loginView.querySelector('.creditsLink') as HTMLElement;
 creditsLink.addEventListener('click', event => {
@@ -155,6 +135,7 @@ function receivingPlayers(playersListServ: Player[]) {
 			playerServ.radius,
 			playerServ.colour,
 			playerServ.alive,
+			playerServ.points,
 			context,
 			playerServ.username,
 			playerServ.id,
@@ -203,9 +184,11 @@ function render(): void {
 		drawAliveEntities();
 		sendingMousePosition();
 		playerDeplacements();
+
+		gameOver();
 	}
 
-	gameOver();
+	updateLeaderboard();
 	updateEntitiesList();
 	updatePlayersList();
 
@@ -271,11 +254,10 @@ function gameOver() {
 }
 
 function updateLeaderboard() {
-	const copyPlayerList: Player[] = playersList;
-	copyPlayerList.sort((player1, player2) =>
+	playersList.sort((player1, player2) =>
 		player1.getPoints() > player2.getPoints() ? 1 : -1
 	);
-	leaderboardList.innerHTML = copyPlayerList
+	leaderboardList.innerHTML = playersList
 		.slice(0, 5)
 		.map(player => `<li>${player.getUsername()} : ${player.getPoints()}</li>`)
 		.join('');

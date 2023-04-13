@@ -78,7 +78,8 @@ Nous sommes tout de même parvenus à mettre en place les fonctionnalités princ
 Parmi les fonctionnalités à revoir, nous pouvons noter la possibilité d'ajuster l'échelle d'affichage du plateau de jeu en fonction
 du rayon du joueur qui à cesser de fonctionné correctement lors de la séparation du code entre la partie "Client" et "Serveur".
 Nous pouvons aussi noter une mauvaise gestion des éléments du côté "Client" vis à vis de l'interface graphique dont le code n'est
-pas optimal et loin d'être ergonomique. En éparpillant par exemple les différentes "Views" en classes à part entière (GameView / CreditsView / LoginView / GameOverView). Classes, par ailleurs, présentes mais non implémentées par manque de temps.
+pas optimal et loin d'être ergonomique. En éparpillant par exemple les différentes "Views" en classes à part entière (GameView / CreditsView / LoginView / GameOverView).
+Beaucoup de bugs furent découvert à la toute fin du projet, freinant grandement l'implémentation des dernières fonctionnalités notamment vis à vis de l'interface utilisateur. Bien que certains furent corrigés, d'autres subsistent encore ou n'ont pas été encore relevés.
 
 Afin de prévoir de potentielles difficultés étant survenues par le passé, ou pouvant survenir à l'avenir. Il serait préférable
 de mettre en place une véritable forme de gestion de projet par l'intermédiaire d'outils tels que "Trello", "Kanban" ou "Padlet" afin de visualiser le travail à réaliser mais également l'avancée concrète du projet afin d'avoir une meilleure vision dans le temps et de se projetter vis à vis de l'état actuel du projet. A ce même titre nous pouvons penser aux "Issues" GitLab pouvant également remplir ce rôle en partie. Une meilleure communication et répartition des tâches se devront également d'être faits plus clairement afin que le rôle de chacun soit fixe afin de ne pas réaliser un travail qui aurait déjà été réalisé.  

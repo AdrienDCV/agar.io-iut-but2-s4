@@ -11,12 +11,13 @@ export default class Player extends Dot {
 		radius: number,
 		colour: string,
 		alive: boolean,
+		points: number,
 		context: CanvasRenderingContext2D | null,
 		username: string,
 		id: string,
 		startPlaying: Date
 	) {
-		super(xPosition, yPosition, radius, colour, 0, alive, context);
+		super(xPosition, yPosition, radius, colour, points, alive, context);
 		this.username = username;
 		this.id = id;
 		this.isPlayer = true;
