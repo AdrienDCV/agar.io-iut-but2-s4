@@ -3,6 +3,7 @@ import Dot from './Dot';
 export default class Player extends Dot {
 	username: string;
 	id: string;
+	startPlaying: Date;
 
 	constructor(
 		xPosition: number,
@@ -13,12 +14,14 @@ export default class Player extends Dot {
 		points: number,
 		context: CanvasRenderingContext2D | null,
 		username: string,
-		id: string
+		id: string,
+		startPlaying: Date
 	) {
 		super(xPosition, yPosition, radius, colour, points, alive, context);
 		this.username = username;
 		this.id = id;
 		this.isPlayer = true;
+		this.startPlaying = new Date();
 	}
 
 	drawDot() {
@@ -69,5 +72,19 @@ export default class Player extends Dot {
 
 	getId() {
 		return this.id;
+	}
+
+	getStartPlaying() {
+		return this.startPlaying;
+	}
+
+	getTimePlayed() {
+		const currentTime = new Date();
+		return (
+			currentTime.getMinutes() * 60 +
+			currentTime.getSeconds() -
+			this.startPlaying.getMinutes() * 60 +
+			this.startPlaying.getSeconds()
+		);
 	}
 }

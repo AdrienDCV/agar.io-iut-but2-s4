@@ -148,7 +148,8 @@ function receivingEntities(entitiesListServ: Dot[]) {
 				playerServ.points,
 				context,
 				playerServ.username,
-				playerServ.id
+				playerServ.id,
+				new Date(playerServ.startPlaying)
 			);
 			getLocalPlayer(entity as Player);
 		} else {
@@ -246,8 +247,8 @@ function gameOver() {
 		gameOverView.style.display = '';
 		const timer = gameOverView.querySelector('.timePlayed') as HTMLElement;
 		const points = gameOverView.querySelector('.points') as HTMLElement;
-		// console.log(playerLocal.getTimePlayed());
-		// timer.innerHTML = `<h3>${playerLocal.getTimePlayed()} min</h3>`;
+		console.log(playerLocal.getTimePlayed());
+		timer.innerHTML = `<h3>${playerLocal.getTimePlayed()} sec</h3>`;
 		points.innerHTML = `<h3>${playerLocal.getPoints()} points</h3>`;
 	});
 }

@@ -56,7 +56,8 @@ io.on('connection', socket => {
 			0,
 			null,
 			username,
-			socket.id
+			socket.id,
+			new Date()
 		);
 		player.setOnEatenListener(() => {
 			socket.emit('gameOver', true);
@@ -123,7 +124,18 @@ function getPlayer(playerId: string): Player {
 			return player;
 		}
 	}
-	return new Player(0, 0, 0, '', false, 0, null, 'NULLPLAYER', 'NULLPLAYER');
+	return new Player(
+		0,
+		0,
+		0,
+		'',
+		false,
+		0,
+		null,
+		'NULLPLAYER',
+		'NULLPLAYER',
+		new Date()
+	);
 }
 
 function generateDot(): Dot {
