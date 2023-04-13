@@ -1,29 +1,10 @@
-@font-face {
-    font-family: MotivaSans;
-    src: url("./fonts/MotivaSans-Regular.ttf");
-}
-
-*,
-*:before,
-*:after{
-
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: MotivaSans;
-    
-}
-
 .titleCreditsContainer {
-
     text-align: center;
-
 }
 
 .creditsContainer {
-
     position: absolute;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
 
@@ -34,7 +15,7 @@
 
     background-color: white;
     border: solid black 2px;
-    border-radius: 10px;    
+    border-radius: 10px;
 
     display: flex;
     flex-direction: column;
@@ -43,57 +24,49 @@
 }
 
 .contentCreditsContainer {
-
     margin-top: 2%;
     padding: 25px;
-
 }
 
-.textPresentation > a {
+.textPresentation>a {
     text-decoration: none;
     color: rgb(0, 0, 160);
     cursor: pointer;
 }
 
-.textPresentation > a:hover {
+.textPresentation>a:hover {
     border-radius: 5px;
     background-color: rgba(57, 57, 57, 0.197);
 }
 
 .loginLink {
-
     width: fit-content;
     height: fit-content;
     border-radius: 10px;
     margin-top: 10%;
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.115);
-
 }
 
-.loginLink > a, .technosUsed-list a {
-
+.loginLink>a,
+.technosUsed-list a {
     text-decoration: none;
     color: black;
-
 }
 
-.loginLink:visited, .technosUsed-list a:visited{
-
+.loginLink:visited,
+.technosUsed-list a:visited {
     text-decoration: none;
     color: black
-
 }
 
 .technosUsed-list {
-
-    margin-top: 2%;    
+    margin-top: 2%;
     margin-left: 12%;
-
 }
 
 h1 {
-    font-size: 45px; 
+    font-size: 45px;
 }
 
 h2 {

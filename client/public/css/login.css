@@ -1,16 +1,10 @@
-@font-face {
-    font-family: MotivaSans;
-    src: url("./fonts/MotivaSans-Regular.ttf");
-}
-
 .login {
-
     position: absolute;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
-   
-    border-radius: 10px;    
+
+    border-radius: 10px;
 
     width: 20%;
     height: max-content;
@@ -23,20 +17,20 @@
     text-align: center;
 }
 
-.gametitle > h1 {
+.gametitle>h1 {
     font-size: 45px;
 }
 
-.gametitle > em {
+.gametitle>em {
     font-size: small;
 }
 
-.gametitle > em > a {
+.gametitle>em>a {
     text-decoration: none;
     color: blue;
 }
 
-.gametitle > em > a:visited {
+.gametitle>em>a:visited {
     text-decoration: none;
     color: blue;
 }
@@ -57,7 +51,7 @@
     margin-top: 8px;
     font-size: 14px;
     font-weight: 300;
-    border: solid black 1px;    
+    border: solid black 1px;
 }
 
 .input-colour {
@@ -66,12 +60,12 @@
     cursor: pointer;
 }
 
-.loginForm > .pseudo-from-cell, .color-form-cell{
+.loginForm>.pseudo-from-cell,
+.color-form-cell {
     margin-top: 10%;
 }
 
 .playBtn {
-
     margin-top: 50px;
     width: 55%;
     background-color: #6363633b;
@@ -81,7 +75,7 @@
     font-weight: 600;
     border-radius: 5px;
     cursor: pointer;
-    border: none; 
+    border: none;
 }
 
 .playBtn:hover {
@@ -89,26 +83,20 @@
 }
 
 .creditsLink {
-
     width: fit-content;
     height: fit-content;
     border-radius: 10px;
     margin-top: 5%;
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.115);
-
 }
 
-.creditsLink > a {
-
+.creditsLink>a {
     text-decoration: none;
     color: black;
-
 }
 
 .creditsLink:visited {
-
     text-decoration: none;
     color: black
-
 }

@@ -8,6 +8,8 @@ import {
 	ServerToClientEvents,
 } from '../../common/socketInterfaces';
 
+import { mapValue } from '../../common/utils';
+
 const canvas: HTMLCanvasElement = document.querySelector(
 	'.game .gameCanvas'
 ) as HTMLCanvasElement;
@@ -34,13 +36,13 @@ const gameOverView = document.querySelector(
 	'.viewContent .gameOver'
 ) as HTMLElement;
 
+const creditsView = document.querySelector(
+	'.viewContent .credits'
+) as HTMLElement;
+
 const leaderboard = document.querySelector('.leaderboard') as HTMLElement;
 const leaderboardList = leaderboard.querySelector(
 	'.leaderboard-list'
-) as HTMLElement;
-
-const creditsView = document.querySelector(
-	'.viewContent .credits'
 ) as HTMLElement;
 
 creditsView.style.display = 'none';
@@ -61,6 +63,7 @@ loginView.querySelector('.playBtn')?.addEventListener('click', event => {
 
 creditsView.querySelector('.loginLink')?.addEventListener('click', event => {
 	event?.preventDefault();
+	console.log('passe par ici !!!!');
 	creditsView.style.display = 'none';
 	loginView.style.display = '';
 });
@@ -80,13 +83,12 @@ gameOverView
 	});
 
 /* ################################### */
-/*				 JEU				   */
+/*				JEU					   */
 /* ################################### */
 
 let playerLocal: Player;
 
-let entitiesList: Dot[] = [];
-let playersList: Player[] = [];
+let entitiesList: (Dot | Player)[] = [];
 
 const mousePosition = {
 	xPosition: 0,
@@ -98,9 +100,8 @@ canvas.addEventListener('mousemove', event => {
 	mousePosition.yPosition = event.clientY;
 });
 
-socket.on('sendGameAssets', (entitiesListServ, playersListServ) => {
+socket.on('sendGameAssets', entitiesListServ => {
 	receivingEntities(entitiesListServ);
-	receivingPlayers(playersListServ);
 });
 
 function startPlaying() {
@@ -119,31 +120,10 @@ function startPlaying() {
 }
 
 function joinGame(username: string, colour: string) {
+	console.log('le joueur rejoint la partie');
 	socket.emit('joinGame', username, colour, {
 		height: canvas.height,
 		width: canvas.width,
-	});
-}
-
-function receivingPlayers(playersListServ: Player[]) {
-	let player: Player;
-	playersList = [];
-	playersListServ.forEach(playerServ => {
-		player = new Player(
-			playerServ.xPosition,
-			playerServ.yPosition,
-			playerServ.radius,
-			playerServ.colour,
-			playerServ.alive,
-			playerServ.points,
-			context,
-			playerServ.username,
-			playerServ.id,
-			playerServ.startPlaying
-		);
-		playersList.push(player);
-		entitiesList.push(player);
-		getLocalPlayer(player);
 	});
 }
 
@@ -154,28 +134,40 @@ function getLocalPlayer(player: Player) {
 }
 
 function receivingEntities(entitiesListServ: Dot[]) {
-	let entity: Dot;
+	let entity: Dot | Player;
 	entitiesList = [];
 	entitiesListServ.forEach(entityServ => {
 		if (entityServ.isPlayer) {
-			receivingPlayers([entityServ as Player]);
-			return;
+			const playerServ = entityServ as Player;
+			entity = new Player(
+				playerServ.xPosition,
+				playerServ.yPosition,
+				playerServ.radius,
+				playerServ.colour,
+				playerServ.alive,
+				playerServ.points,
+				context,
+				playerServ.username,
+				playerServ.id
+			);
+			getLocalPlayer(entity as Player);
+		} else {
+			entity = new Dot(
+				entityServ.xPosition,
+				entityServ.yPosition,
+				entityServ.radius,
+				entityServ.colour,
+				1,
+				entityServ.alive,
+				context
+			);
 		}
-		entity = new Dot(
-			entityServ.xPosition,
-			entityServ.yPosition,
-			entityServ.radius,
-			entityServ.colour,
-			1,
-			entityServ.alive,
-			context
-		);
 		entitiesList.push(entity);
 	});
 }
 
 function render(): void {
-	context.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+	context.clearRect(0, 0, canvas.width, canvas.height);
 	context.save();
 
 	if (playerLocal != null) {
@@ -184,13 +176,11 @@ function render(): void {
 		drawAliveEntities();
 		sendingMousePosition();
 		playerDeplacements();
-
-		gameOver();
 	}
 
-	updateLeaderboard();
+	gameOver();
 	updateEntitiesList();
-	updatePlayersList();
+	updateLeaderboard();
 
 	context.restore();
 	// requestAnimationFrame(render);
@@ -198,8 +188,8 @@ function render(): void {
 
 function rescaleContextDependingPlayerSize() {
 	context.translate(canvas.clientWidth / 2, canvas.clientHeight / 2);
-	const scaleValue = (5 / playerLocal.getRadius()) * 25;
-	context.scale(scaleValue, scaleValue);
+	const scaleFactor = (5 / playerLocal.getRadius()) * 25;
+	context.scale(scaleFactor, scaleFactor);
 	context.translate(-playerLocal.getXPosition(), -playerLocal.getYPosition());
 }
 
@@ -207,17 +197,32 @@ function playerDeplacements() {
 	socket.on('sendNewPlayerPosition', (newXPosition, newYPosition) => {
 		playerLocal.xPosition = newXPosition;
 		playerLocal.yPosition = newYPosition;
-		const gameCanvasEl = document.querySelector('.game') as HTMLElement;
-		gameCanvasEl.style.backgroundPositionX = `${-(newXPosition / 10)}%`;
-		gameCanvasEl.style.backgroundPositionY = `${-(newYPosition / 10)}%`;
+
+		document.body.style.backgroundPositionX = `${-newXPosition}px`;
+		document.body.style.backgroundPositionY = `${-newYPosition}px`;
 	});
 }
 
 function sendingMousePosition() {
+	const adjustedMouseCoefficientFromCenterX = mapValue(
+		mousePosition.xPosition,
+		0,
+		canvas.width,
+		1,
+		-1
+	);
+	const adjustedMouseCoefficientFromCenterY = mapValue(
+		mousePosition.yPosition,
+		0,
+		canvas.height,
+		1,
+		-1
+	);
+
 	socket.emit(
 		'sendMousePosition',
-		mousePosition.xPosition,
-		mousePosition.yPosition,
+		adjustedMouseCoefficientFromCenterX,
+		adjustedMouseCoefficientFromCenterY,
 		playerLocal.getId()
 	);
 }
@@ -236,12 +241,6 @@ function updateEntitiesList() {
 	});
 }
 
-function updatePlayersList() {
-	socket.on('updatePlayersList', playersListServ => {
-		receivingPlayers(playersListServ);
-	});
-}
-
 function gameOver() {
 	socket.on('gameOver', bool => {
 		gameOverView.style.display = '';
@@ -254,6 +253,9 @@ function gameOver() {
 }
 
 function updateLeaderboard() {
+	const playersList: Player[] = entitiesList.filter(
+		entity => entity.isPlayer
+	) as Player[];
 	playersList.sort((player1, player2) =>
 		player1.getPoints() > player2.getPoints() ? 1 : -1
 	);
