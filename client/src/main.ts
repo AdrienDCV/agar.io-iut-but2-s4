@@ -20,6 +20,10 @@ const canvas: HTMLCanvasElement = document.querySelector(
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+window.addEventListener('resize', event => {
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+});
 
 const context: CanvasRenderingContext2D = canvas.getContext(
 	'2d'
@@ -31,8 +35,6 @@ const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
 /*			    FRONT				   */
 /* ################################### */
 const loginView = document.querySelector('.viewContent .login') as HTMLElement;
-
-const gameView = document.querySelector('.viewContent .game') as HTMLElement;
 
 const gameOverView = document.querySelector(
 	'.viewContent .gameOver'
@@ -66,12 +68,31 @@ creditsLink.addEventListener('click', event => {
 	creditsView.style.display = '';
 });
 
+loginView.querySelector('.playBtn')?.addEventListener('click', event => {
+	event.preventDefault();
+	startPlaying();
+});
+
 creditsView.querySelector('.loginLink')?.addEventListener('click', event => {
 	event?.preventDefault();
 	console.log('passe par ici !!!!');
 	creditsView.style.display = 'none';
 	loginView.style.display = '';
 });
+
+gameOverView
+	.querySelector('.playAgainBtn')
+	?.addEventListener('click', event => {
+		startPlaying();
+	});
+
+gameOverView
+	.querySelector('.loginLink > .menuLink')
+	?.addEventListener('click', event => {
+		event.preventDefault();
+		loginView.style.display = '';
+		gameOverView.style.display = 'none';
+	});
 
 /* ################################### */
 /*				JEU					   */
@@ -87,23 +108,6 @@ const mousePosition = {
 	yPosition: 0,
 };
 
-document.querySelector('.playBtn')?.addEventListener('click', event => {
-	event.preventDefault();
-	const usernameInput = document.querySelector(
-		'.input-pseudo[type=text]'
-	) as HTMLInputElement;
-	const colourInput = document.querySelector(
-		'.input-colour[type=color]'
-	) as HTMLInputElement;
-	const username: string = usernameInput.value;
-	const colour: string = colourInput.value;
-	loginView.style.display = 'none';
-	event.preventDefault();
-	joinGame(username, colour);
-});
-
-grid();
-
 canvas.addEventListener('mousemove', event => {
 	mousePosition.xPosition = event.clientX;
 	mousePosition.yPosition = event.clientY;
@@ -114,9 +118,26 @@ socket.on('sendGameAssets', (entitiesListServ, playersListServ) => {
 	receivingPlayers(playersListServ);
 });
 
+function startPlaying() {
+	const usernameInput = document.querySelector(
+		'.input-pseudo'
+	) as HTMLInputElement;
+	const colourInput = document.querySelector(
+		'.input-colour'
+	) as HTMLInputElement;
+	gameOverView.style.display = 'none';
+	const username: string = usernameInput.value;
+	const colour: string = colourInput.value;
+	loginView.style.display = 'none';
+	joinGame(username, colour);
+}
+
 function joinGame(username: string, colour: string) {
 	console.log('le joueur rejoint la partie');
-	socket.emit('joinGame', username, colour, context);
+	socket.emit('joinGame', username, colour, {
+		height: canvas.height,
+		width: canvas.width,
+	});
 }
 
 function receivingPlayers(playersListServ: Player[]) {
@@ -140,6 +161,7 @@ function receivingPlayers(playersListServ: Player[]) {
 }
 
 function getLocalPlayer(player: Player) {
+	console.log(player.id, socket.id);
 	if (player.id === socket.id) {
 		playerLocal = player;
 	}
@@ -167,7 +189,8 @@ function render(): void {
 	context.save();
 
 	if (playerLocal != null) {
-		console.log(playersList.length);
+		// console.log(playersList.length);
+
 		rescaleContextDependingPlayerSize();
 
 		drawAliveEntities();
@@ -175,15 +198,12 @@ function render(): void {
 		playerDeplacements();
 	}
 
+	gameOver();
 	updateEntitiesList();
 	updatePlayersList();
 
 	context.restore();
 	// requestAnimationFrame(render);
-
-	if (!playerLocal.isAlive()) {
-		gameOverView.style.display = '';
-	}
 }
 
 function rescaleContextDependingPlayerSize() {
@@ -197,6 +217,9 @@ function playerDeplacements() {
 	socket.on('sendNewPlayerPosition', (newXPosition, newYPosition) => {
 		playerLocal.xPosition = newXPosition;
 		playerLocal.yPosition = newYPosition;
+		//const gameCanvasEl = document.querySelector('.game') as HTMLElement;
+		//gameCanvasEl.style.backgroundPositionX = `${-(newXPosition / 10)}%`;
+		//gameCanvasEl.style.backgroundPositionY = `${-(newYPosition / 10)}%`;
 	});
 }
 
@@ -229,16 +252,12 @@ function updatePlayersList() {
 	});
 }
 
-function grid() {
-	const spaceBetweenLines = 50;
-	for (let y = spaceBetweenLines; y < canvas.height; y += spaceBetweenLines) {
-		context.moveTo(0, y);
-		context.lineTo(canvas.width, y);
-	}
-	for (let x = spaceBetweenLines; x < canvas.width; x += spaceBetweenLines) {
-		context.moveTo(x, 0);
-		context.lineTo(x, canvas.height);
-	}
-	context.stroke();
+function gameOver() {
+	socket.on('gameOver', bool => {
+		console.log('<hDJfhsdhkfhjsdhfukzrfn,dsbhgfhsdhfjsd');
+
+		gameOverView.style.display = '';
+	});
 }
+
 setInterval(render, 1000 / 60);

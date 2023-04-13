@@ -1,3 +1,5 @@
+import Player from './Player';
+
 export default class Dot {
 	colour: string;
 	radius: number;
@@ -5,7 +7,9 @@ export default class Dot {
 	points: number;
 	xPosition: number;
 	yPosition: number;
-	context: CanvasRenderingContext2D;
+	context: CanvasRenderingContext2D | null;
+
+	onEatenListener?: () => void;
 
 	constructor(
 		xPosition: number,
@@ -14,7 +18,7 @@ export default class Dot {
 		colour: string,
 		points: number,
 		alive: boolean,
-		context: CanvasRenderingContext2D
+		context: CanvasRenderingContext2D | null
 	) {
 		this.xPosition = xPosition;
 		this.yPosition = yPosition;
@@ -26,6 +30,7 @@ export default class Dot {
 	}
 
 	drawDot() {
+		if (!this.context) return;
 		this.context.strokeStyle = this.colour;
 		this.context.lineWidth = 4;
 		this.context.fillStyle = this.colour;
@@ -43,6 +48,7 @@ export default class Dot {
 	}
 
 	drawDotPlayer(username: string) {
+		if (!this.context) return;
 		this.context.strokeStyle = this.colour;
 		this.context.lineWidth = 4;
 		this.context.fillStyle = this.colour;
@@ -64,9 +70,14 @@ export default class Dot {
 			this.setPoints(this.getPoints() + dotToEat.getPoints());
 			this.setRadius(this.radius + dotToEat.getRadius() * 0.25);
 			dotToEat.setAlive(false);
-		} else if (dotToEat.getRadius() > this.radius) {
-			dotToEat.eats(this);
+			if (dotToEat instanceof Player) {
+				dotToEat.onEatenListener && dotToEat.onEatenListener();
+			}
 		}
+	}
+
+	setOnEatenListener(onEatenListener: () => void) {
+		this.onEatenListener = onEatenListener;
 	}
 
 	getColour() {

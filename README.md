@@ -53,6 +53,9 @@ La zone de capture de la position du curseur de la souris pourrait également ê
 Nous pouvons aussi noter une mauvaise gestion des éléments du côté "Client" vis à vis de l'interface graphique dont le code n'est
 pas optimal et loin d'être ergonomique. En éparpillant par exemple les différentes "Views" en classes à part entière (GameView / CreditsView / LoginView / GameOverView). Classes, par ailleurs, présentes mais non implémentées par manque de temps.
 
+Afin de prévoir de potentielles difficultés étant survenues par le passé, ou pouvant survenir à l'avenir. Il serait préférable
+de mettre en place une véritable forme de gestion de projet par l'intermédiaire d'outils tels que "Trello", "Kanban" ou "Padlet" afin de visualiser le travail à réaliser mais également l'avancée concrète du projet afin d'avoir une meilleure vision dans le temps et de se projetter vis à vis de l'état actuel du projet. A ce même titre nous pouvons penser aux "Issues" GitLab pouvant également remplir ce rôle en partie. Une meilleure communication et répartition des tâches se devront également d'être faits plus clairement afin que le rôle de chacun soit fixe afin de ne pas réaliser un travail qui aurait déjà été réalisé.  
+Nous avons reçu des consignes et/ou des conseils sur ce sujet, nous nous en sommes trop peu inspirés, à nous maintenant de faire face aux conséquences.
 
 
 _-- Crédits --   

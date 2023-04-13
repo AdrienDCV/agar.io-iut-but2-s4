@@ -8,6 +8,7 @@ export interface ServerToClientEvents {
 	sendNewPlayerPosition: (newXPosition: number, newYPosition: number) => void;
 	updateEntitiesList: (entitiesList: Dot[]) => void;
 	updatePlayersList: (playersList: Player[]) => void;
+	gameOver: (alive: boolean) => void;
 }
 
 export interface ClientToServerEvents {
@@ -16,7 +17,10 @@ export interface ClientToServerEvents {
 	joinGame: (
 		username: string,
 		colour: string,
-		context: CanvasRenderingContext2D
+		config: {
+			height: number;
+			width: number;
+		}
 	) => void;
 	sendMousePosition: (
 		mouseXPosition: number,

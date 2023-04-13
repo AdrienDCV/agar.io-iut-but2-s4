@@ -10,7 +10,7 @@ export default class Player extends Dot {
 		radius: number,
 		colour: string,
 		alive: boolean,
-		context: CanvasRenderingContext2D,
+		context: CanvasRenderingContext2D | null,
 		username: string,
 		id: string
 	) {

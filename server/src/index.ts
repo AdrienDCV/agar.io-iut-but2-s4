@@ -1,6 +1,6 @@
 import express from 'express';
 import http from 'http';
-import { Server as IOServer } from 'socket.io';
+import { Server as IOServer, Socket } from 'socket.io';
 import addWebpackMiddleware from './addWebpackMiddleware';
 import Player from '../../common/Player';
 import Dot from '../../common/Dot';
@@ -32,7 +32,7 @@ let foodsList: Dot[] = [];
 
 const canvasWidth: number = 1920;
 const canvasHeight: number = 1080;
-let canvasContext: CanvasRenderingContext2D;
+let frontConfig: { height: number; width: number };
 
 /* ################################################## */
 
@@ -43,13 +43,11 @@ io.on('connection', socket => {
 
 	socket.emit('navy', `HEY ! LISTEN ! WATCH OUT ! HELLO !`);
 
-	socket.on('joinGame', (username, colour, context) => {
-		if (canvasContext == null) {
-			canvasContext = context;
-		}
+	socket.on('joinGame', (username, colour, config) => {
+		frontConfig = config;
 
-		const x = Math.random() * canvasWidth;
-		const y = Math.random() * canvasHeight;
+		const x = Math.random() * frontConfig.width;
+		const y = Math.random() * frontConfig.height;
 
 		const player: Player = new Player(
 			x,
@@ -57,10 +55,13 @@ io.on('connection', socket => {
 			50,
 			colour,
 			true,
-			context,
+			null,
 			username,
 			socket.id
 		);
+		player.setOnEatenListener(() => {
+			socket.emit('gameOver', true);
+		});
 		playersList.push(player);
 		entitiesList.push(player);
 		io.emit('sendPlayers', playersList);
@@ -70,12 +71,20 @@ io.on('connection', socket => {
 	socket.on('sendMousePosition', (mouseXPosition, mouseYPosition, playerId) => {
 		const player: Player = getPlayer(playerId);
 
+		const xCenter = frontConfig.width / 2;
+		const yCenter = frontConfig.height / 2;
 		if (mouseXPosition != 0 && mouseYPosition != 0) {
-			player.xPosition -= (player.getXPosition() - mouseXPosition) * 0.025;
-			player.yPosition -= (player.getYPosition() - mouseYPosition) * 0.025;
+			player.xPosition -=
+				(xCenter - mouseXPosition) *
+				0.015 *
+				(frontConfig.height / frontConfig.width);
+			player.yPosition -=
+				(yCenter - mouseYPosition) *
+				0.015 *
+				(frontConfig.width / frontConfig.height);
 
 			socket.emit('sendNewPlayerPosition', player.xPosition, player.yPosition);
-			eatDot(playerId);
+			eatFood(playerId);
 			eatPlayer(playerId);
 			io.emit('updateEntitiesList', entitiesList);
 		}
@@ -111,23 +120,14 @@ function getPlayer(playerId: string): Player {
 			return player;
 		}
 	}
-	return new Player(
-		0,
-		0,
-		0,
-		'',
-		false,
-		canvasContext,
-		'NULLPLAYER',
-		'NULLPLAYER'
-	);
+	return new Player(0, 0, 0, '', false, null, 'NULLPLAYER', 'NULLPLAYER');
 }
 
 function generateDot(): Dot {
 	let x = Math.random() * canvasWidth;
 	let y = Math.random() * canvasHeight;
 	let colour = colors[Math.round(Math.random() * 3)];
-	return new Dot(x, y, 10, colour, 1, true, canvasContext);
+	return new Dot(x, y, 10, colour, 1, true, null);
 }
 
 function calculDistanceBetweenPoints(pointA: Dot, pointB: Dot) {
@@ -136,7 +136,7 @@ function calculDistanceBetweenPoints(pointA: Dot, pointB: Dot) {
 	return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
 }
 
-function eatDot(playerId: string): void {
+function eatFood(playerId: string): void {
 	const player: Player = getPlayer(playerId);
 	for (let i: number = 0; i < foodsList.length; i++) {
 		if (foodsList[i] != null) {
@@ -145,8 +145,11 @@ function eatDot(playerId: string): void {
 				player.radius + foodsList[i].radius
 			) {
 				player.eats(foodsList[i]);
+				const entityIdx = entitiesList.findIndex(
+					entity => entity === foodsList[i]
+				);
+				entitiesList.splice(entityIdx, 1);
 				if (!foodsList[i].isAlive()) {
-					entitiesList.splice(i, 1);
 					foodsList[i] = generateDot();
 					entitiesList.push(foodsList[i]);
 				}
@@ -164,6 +167,7 @@ function eatPlayer(playerId: string): void {
 				player.radius + playersList[i].radius
 			) {
 				player.eats(playersList[i]);
+
 				playersList.splice(i, 1);
 				entitiesList.splice(i, 1);
 			}
