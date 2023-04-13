@@ -12,7 +12,8 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
 	hello: () => void;
-	join: (
+	connect: () => void;
+	joinGame: (
 		username: string,
 		colour: string,
 		context: CanvasRenderingContext2D

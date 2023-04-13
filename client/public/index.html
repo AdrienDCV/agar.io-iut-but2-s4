@@ -8,55 +8,143 @@
 
 	<link rel="stylesheet" type="text/css" href="./css/login.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/credits.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/gameover.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/index.css"/>
 
-	<title>JSAÉ</title>
 
-	<style>
-		canvas {
-			background-color: white;
-			border: 3px dashed #777;
-		}
-	
-	</style>
+	<title>SAÉ S4.A.01.2 - Raga.oi</title>
+
 	<script type="module" src="build/main.bundle.js" defer></script>
-</head>
-<body>
 
-	<section class="loginContainer">
-		<div class="title">
-			<h1>Raga.oi</h1>
-			<em style="white-space: pre-line;">Un jeu développé par 
-				<a href="https://gitlab.univ-lille.fr/adrien.dacostaveiga.etu">Adrien DA COSTA VEIGA</a> 
-						& 
-				<a href="https://gitlab.univ-lille.fr/ylann.gronnier.etu">Ylann GRONNIER</a>
-			</em>
-		</div>
-	
-		<div class="loginForm-container">
-			<form class="loginForm" action="./jeu.html">
-				<div class="pseudo-form-cell">
-					<label for="pseudo" class="label-title">Pseudo</label>
-					<input type="text" class="input-pseudo" id="pseudo" name="pseudo" placeholder="Votre pseudo...">
+</head>
+	<body>
+
+		<section class="viewContent">
+			<section class="login">
+				<div class="gametitle">
+					<h1>Raga.oi</h1>
+					<em style="white-space: pre-line;">Un jeu développé par 
+						<a href="https://gitlab.univ-lille.fr/adrien.dacostaveiga.etu">Adrien DA COSTA VEIGA</a> 
+								& 
+						<a href="https://gitlab.univ-lille.fr/ylann.gronnier.etu">Ylann GRONNIER</a>
+					</em>
 				</div>
-				<div class="color-form-cell">
-					<label for="couleur" class="label-title">Couleur</label>
-					<input type="color" class="input-colour" id="colour" name="color" value="">
+				
+				<div class="loginForm-container">
+					<form class="loginForm">
+						<div class="pseudo-form-cell">
+							<label for="pseudo" class="label-title">Pseudo</label>
+							<input type="text" class="input-pseudo" id="pseudo" name="pseudo" placeholder="Votre pseudo...">
+						</div>
+						<div class="color-form-cell">
+							<label for="couleur" class="label-title">Couleur</label>
+							<input type="color" class="input-colour" id="colour" name="color" value="">
+						</div>
+						<button type="submit" class="playBtn">Jouer</button>
+					</form>
 				</div>
-				<button type="submit" class="playBtn">Jouer</button>
-			</form>
-		</div>
+				
+				<div class="creditsLink">
+					<a href="./credits.html">Crédits</a>
+				</div>
+			</section>
+
+			<section class="game">
+					<canvas class="gameCanvas" width="100%" height="100%"></canvas>
+			</section>
+
+			<section class="credits">
+				<section class="creditsContainer">
+          
+					<div class="titleCreditsContainer">
+					   <h1>
+						  Crédits
+					   </h1>
+					</div>
+				   
+					<div class="contentCreditsContainer">
 		
-		<div class="creditsLink">
-			<a href="./credits.html">Crédits</a>
-		</div>
+					   <p>
+						  Projet réalisé dans le cadre
+						  de la <em>SAÉ S4.A2.2 Développement d'applications</em>
+					   </p>
 		
-	</section>
-	
-	<section class="gameContainer" style="display: none;">
-		<div class="gameCanvas">
-			<canvas class="gameCanvas" width="1000" height="450"></canvas>
-		</div>
-	</section>
-	
-</body>
+					   <div class="developpers-presentation">
+						  <h2>
+							 Développeurs:
+						  </h2>
+		   
+						  <p style="white-space: pre-line;" class="textPresentation">
+							 DA COSTA VEIGA Adrien (Parppaing)
+							 BUT Informatique, Parcours réalisation d'applications
+							 Semestre 4, Groupe I
+							 Institut Universitaier de Lille, site de Villeneuve d'Ascq
+							 Université de Lille
+							 Participation au projet : 50%
+							 
+							 Mail : adrien.dacostaveiga.etu@univ-lille.fr
+							 <a href="https://gitlab.univ-lille.fr/adrien.dacostaveiga.etu">GitLab</a>
+							 Jeu vidéo préféré : <a href="https://fr.wikipedia.org/wiki/The_Legend_of_Zelda:_Ocarina_of_Time">The Legend of Zelda : Ocarina of Time</a>
+						  </p>
+						  
+						  <p style="white-space: pre-line;" class="textPresentation">
+							 GRONNIER Ylann (Xehanort)
+							 BUT Informatique, Parcours réalisation d'applications
+							 Semestre 4, Groupe I
+							 Institut Universitaier de Lille, site de Villeneuve d'Ascq
+							 Université de Lille
+							 Participation au projet : 50%
+							 
+							 Mail : ylann.gronnier.etu@univ-lille.fr
+							 <a href="https://gitlab.univ-lille.fr/ylann.gronnier.etu">GitLab</a>
+							 Jeu vidéo préféré : <a href="https://fr.wikipedia.org/wiki/Kingdom_Hearts_2">Kingdom Hearts 2</a>
+						  </p>
+					   </div>   
+					   
+		
+					   <!-- <div class="technosUsed">
+		
+						  <h2>Technologies</h2>
+		
+						  <ul class="technosUsed-list">
+							 <li><a href="https://developer.mozilla.org/fr/docs/Web/HTML">HTML</a></li>
+							 <li><a href="https://developer.mozilla.org/fr/docs/Web/CSS">CSS</a></li>
+							 <li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript">JavaScript</a></li>
+							 <li><a href="https://www.typescriptlang.org/">TypeScript</a></li>
+							 <li><a href="https://nodejs.org/fr">Node.js</a></li>
+							 <li><a href="https://socket.io/fr/">Socket.io</a></li>
+						  </ul>
+					   </div> -->
+		
+		
+					   <div class="loginLink">
+						  <a href="./index.html">Retour</a>
+					   </div>
+					</div>
+				 </section>
+			</section>
+
+			<section class="gameOver">
+				<section class="gameOverContainer">
+					<div class="gameOverTitle">
+						<h1>
+							GAME OVER...
+						</h1>
+					</div>
+		
+					<div class="timePlayed">
+						<h3>X min</h3>
+					</div>
+		
+					<button class="playeGainBtn" type="submit">Rejouer</button>
+		
+					<div class="game-menuLinks">
+						<a href="./index.html" class="gameLink">Rejouer</a>
+						<a href="./login.html" class="menuLink">Retour au menu principal</a>
+					</div>
+				</section>
+			</section>
+			
+		</section>
+	</body>
 </html>

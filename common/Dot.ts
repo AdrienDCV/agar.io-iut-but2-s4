@@ -42,6 +42,23 @@ export default class Dot {
 		this.context.stroke();
 	}
 
+	drawDotPlayer(username: string) {
+		this.context.strokeStyle = this.colour;
+		this.context.lineWidth = 4;
+		this.context.fillStyle = this.colour;
+		this.context.beginPath();
+		this.context.arc(
+			this.xPosition,
+			this.yPosition,
+			this.radius,
+			0,
+			2 * Math.PI,
+			false
+		);
+		this.context.fill();
+		this.context.stroke();
+	}
+
 	eats(dotToEat: Dot) {
 		if (dotToEat.getRadius() < this.radius) {
 			this.setPoints(this.getPoints() + dotToEat.getPoints());

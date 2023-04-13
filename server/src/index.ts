@@ -1,4 +1,4 @@
-import express, { response } from 'express';
+import express from 'express';
 import http from 'http';
 import { Server as IOServer } from 'socket.io';
 import addWebpackMiddleware from './addWebpackMiddleware';
@@ -39,16 +39,21 @@ let canvasContext: CanvasRenderingContext2D;
 generateDots();
 io.on('connection', socket => {
 	console.log(`Connexion de l'utilisateur : ${socket.id}`);
+	socket.emit('sendGameAssets', entitiesList, playersList);
 
 	socket.emit('navy', `HEY ! LISTEN ! WATCH OUT ! HELLO !`);
 
-	socket.on('join', (username, colour, context) => {
+	socket.on('joinGame', (username, colour, context) => {
 		if (canvasContext == null) {
 			canvasContext = context;
 		}
+
+		const x = Math.random() * canvasWidth;
+		const y = Math.random() * canvasHeight;
+
 		const player: Player = new Player(
-			100,
-			100,
+			x,
+			y,
 			50,
 			colour,
 			true,
@@ -70,7 +75,8 @@ io.on('connection', socket => {
 			player.yPosition -= (player.getYPosition() - mouseYPosition) * 0.025;
 
 			socket.emit('sendNewPlayerPosition', player.xPosition, player.yPosition);
-			eatDotManager(playerId);
+			eatDot(playerId);
+			eatPlayer(playerId);
 			io.emit('updateEntitiesList', entitiesList);
 		}
 	});
@@ -130,9 +136,8 @@ function calculDistanceBetweenPoints(pointA: Dot, pointB: Dot) {
 	return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
 }
 
-function eatDotManager(playerId: string): void {
+function eatDot(playerId: string): void {
 	const player: Player = getPlayer(playerId);
-
 	for (let i: number = 0; i < foodsList.length; i++) {
 		if (foodsList[i] != null) {
 			if (
@@ -141,20 +146,29 @@ function eatDotManager(playerId: string): void {
 			) {
 				player.eats(foodsList[i]);
 				if (!foodsList[i].isAlive()) {
+					entitiesList.splice(i, 1);
 					foodsList[i] = generateDot();
-					entitiesList[i] = foodsList[i];
+					entitiesList.push(foodsList[i]);
 				}
 			}
 		}
 	}
 }
 
-function drawAliveEntities(): void {
-	entitiesList.forEach(entity => {
-		if (entity.isAlive()) {
-			entity.drawDot();
+function eatPlayer(playerId: string): void {
+	const player: Player = getPlayer(playerId);
+	for (let i: number = 0; i < playersList.length; i++) {
+		if (playersList[i] != null && playersList[i].getId() != player.getId()) {
+			if (
+				calculDistanceBetweenPoints(player, playersList[i]) <=
+				player.radius + playersList[i].radius
+			) {
+				player.eats(playersList[i]);
+				playersList.splice(i, 1);
+				entitiesList.splice(i, 1);
+			}
 		}
-	});
+	}
 }
 
 function generateDots(): void {

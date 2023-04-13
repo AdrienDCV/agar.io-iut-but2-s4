@@ -3,21 +3,7 @@
     src: url("./fonts/MotivaSans-Regular.ttf");
 }
 
-
-*,
-*:before,
-*:after{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: MotivaSans;
-}
-
-body {
-    text-align: center;
-}
-
-.loginContainer {
+.login {
 
     position: absolute;
     transform: translate(-50%,-50%);
@@ -31,24 +17,25 @@ body {
 
     padding: 10px;
 
-    background-color: white;
     border: solid black 2px;
+
+    text-align: center;
 }
 
-.title > h1 {
+.gametitle > h1 {
     font-size: 45px;
 }
 
-.title > em {
+.gametitle > em {
     font-size: small;
 }
 
-.title > em > a {
+.gametitle > em > a {
     text-decoration: none;
     color: blue;
 }
 
-.title > em > a:visited {
+.gametitle > em > a:visited {
     text-decoration: none;
     color: blue;
 }

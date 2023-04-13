@@ -19,6 +19,10 @@ export default class Player extends Dot {
 		this.id = id;
 	}
 
+	drawDot(): void {
+		super.drawDotPlayer(this.username);
+	}
+
 	getUsername() {
 		return this.username;
 	}
