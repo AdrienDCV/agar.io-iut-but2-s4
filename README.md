@@ -77,7 +77,6 @@ Nous sommes tout de même parvenus à mettre en place les fonctionnalités princ
 
 Parmi les fonctionnalités à revoir, nous pouvons noter la possibilité d'ajuster l'échelle d'affichage du plateau de jeu en fonction
 du rayon du joueur qui à cesser de fonctionné correctement lors de la séparation du code entre la partie "Client" et "Serveur".
-La zone de capture de la position du curseur de la souris pourrait également être à revoir pour rendre la reconnaissance plus souple.
 Nous pouvons aussi noter une mauvaise gestion des éléments du côté "Client" vis à vis de l'interface graphique dont le code n'est
 pas optimal et loin d'être ergonomique. En éparpillant par exemple les différentes "Views" en classes à part entière (GameView / CreditsView / LoginView / GameOverView). Classes, par ailleurs, présentes mais non implémentées par manque de temps.
 
