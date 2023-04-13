@@ -40,6 +40,10 @@ const gameOverView = document.querySelector(
 	'.viewContent .gameOver'
 ) as HTMLElement;
 
+const leaderboard = document.querySelector(
+	'.viewContent .game .leaderboard'
+) as HTMLElement;
+
 const creditsView = document.querySelector(
 	'.viewContent .credits'
 ) as HTMLElement;

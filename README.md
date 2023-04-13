@@ -24,6 +24,34 @@ Ce projet fut donc, à l'instar du jeu original, développé sous forme d'applic
 
 ## B. Diagramme de séquence.
 
+- #### Connexion à l'application web.
+![](./images/diag-seq-connexion-web-app.png)
+
+- #### Cliquer sur le bouton "Jouer".
+![](./images/diag-seq-jouer.png)  
+
+- #### Déplacement en fonction de la position du curseur de la souris.
+![](./images/diag-seq-deplacements.png)
+
+- #### Collision avec un.e autre joueur.euse / une sphère de nourriture.
+![](./images/diag-seq-collision.png)
+
+- #### Le.a joueur.euse se fait manger par un.e autre joueur.euse.
+![](./images/diag-seq-game-over.png)
+
+- #### Rejouer
+![](./images/diag-seq-rejouer.png)
+
+- #### Rafraîchissement de l'affichage et des données.
+![](./images/diag-sequence-render.png)
+
+- #### Le.a joueur.euse se déconnecte de l'application.
+![](./images/diag-seq-deconnexion.png)
+
+- #### Cliquer sur le lien "Crédits" du menu principal.
+![](./images/diag-seq-credits.png)
+
+
 ## C. Difficultés rencontrées et fièrté(s).
 
 Les difficultés rencontrées se sont fait ressentir en grande partie au début du projet. 
