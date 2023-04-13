@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="./css/login.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/credits.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/gameover.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/leaderboard.css"/>
 	<link rel="stylesheet" type="text/css" href="./css/index.css"/>
 
 
@@ -49,10 +50,13 @@
 				</div>
 			</section>
 
-			<section class="game">
-					<div class="leaderboard">
-					</div>
+			<section class="leaderboard">
+				<p>Leaderboard</p>
+				<ul class="leaderboard-list">
+				</ul>
+			</section>
 
+			<section class="game">
 					<canvas class="gameCanvas" width="100%" height="100%"></canvas>
 			</section>
 
@@ -136,7 +140,9 @@
 					</div>
 		
 					<div class="timePlayed">
-						<h3>X min</h3>
+					</div>
+
+					<div class="points">
 					</div>
 		
 					<button class="playAgainBtn">Rejouer</button>

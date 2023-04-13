@@ -40,8 +40,9 @@ const gameOverView = document.querySelector(
 	'.viewContent .gameOver'
 ) as HTMLElement;
 
-const leaderboard = document.querySelector(
-	'.viewContent .game .leaderboard'
+const leaderboard = document.querySelector('.leaderboard') as HTMLElement;
+const leaderboardList = leaderboard.querySelector(
+	'.leaderboard-list'
 ) as HTMLElement;
 
 const creditsView = document.querySelector(
@@ -50,6 +51,7 @@ const creditsView = document.querySelector(
 
 creditsView.style.display = 'none';
 gameOverView.style.display = 'none';
+leaderboard.style.display = 'none';
 
 // // mise en place du Router
 // const routes = [
@@ -79,7 +81,6 @@ loginView.querySelector('.playBtn')?.addEventListener('click', event => {
 
 creditsView.querySelector('.loginLink')?.addEventListener('click', event => {
 	event?.preventDefault();
-	console.log('passe par ici !!!!');
 	creditsView.style.display = 'none';
 	loginView.style.display = '';
 });
@@ -99,7 +100,7 @@ gameOverView
 	});
 
 /* ################################### */
-/*				JEU					   */
+/*				 JEU				   */
 /* ################################### */
 
 let playerLocal: Player;
@@ -133,11 +134,11 @@ function startPlaying() {
 	const username: string = usernameInput.value;
 	const colour: string = colourInput.value;
 	loginView.style.display = 'none';
+	leaderboard.style.display = '';
 	joinGame(username, colour);
 }
 
 function joinGame(username: string, colour: string) {
-	console.log('le joueur rejoint la partie');
 	socket.emit('joinGame', username, colour, {
 		height: canvas.height,
 		width: canvas.width,
@@ -156,7 +157,8 @@ function receivingPlayers(playersListServ: Player[]) {
 			playerServ.alive,
 			context,
 			playerServ.username,
-			playerServ.id
+			playerServ.id,
+			playerServ.startPlaying
 		);
 		playersList.push(player);
 		entitiesList.push(player);
@@ -165,7 +167,6 @@ function receivingPlayers(playersListServ: Player[]) {
 }
 
 function getLocalPlayer(player: Player) {
-	console.log(player.id, socket.id);
 	if (player.id === socket.id) {
 		playerLocal = player;
 	}
@@ -175,6 +176,10 @@ function receivingEntities(entitiesListServ: Dot[]) {
 	let entity: Dot;
 	entitiesList = [];
 	entitiesListServ.forEach(entityServ => {
+		if (entityServ.isPlayer) {
+			receivingPlayers([entityServ as Player]);
+			return;
+		}
 		entity = new Dot(
 			entityServ.xPosition,
 			entityServ.yPosition,
@@ -193,8 +198,6 @@ function render(): void {
 	context.save();
 
 	if (playerLocal != null) {
-		// console.log(playersList.length);
-
 		rescaleContextDependingPlayerSize();
 
 		drawAliveEntities();
@@ -221,9 +224,9 @@ function playerDeplacements() {
 	socket.on('sendNewPlayerPosition', (newXPosition, newYPosition) => {
 		playerLocal.xPosition = newXPosition;
 		playerLocal.yPosition = newYPosition;
-		//const gameCanvasEl = document.querySelector('.game') as HTMLElement;
-		//gameCanvasEl.style.backgroundPositionX = `${-(newXPosition / 10)}%`;
-		//gameCanvasEl.style.backgroundPositionY = `${-(newYPosition / 10)}%`;
+		const gameCanvasEl = document.querySelector('.game') as HTMLElement;
+		gameCanvasEl.style.backgroundPositionX = `${-(newXPosition / 10)}%`;
+		gameCanvasEl.style.backgroundPositionY = `${-(newYPosition / 10)}%`;
 	});
 }
 
@@ -258,10 +261,24 @@ function updatePlayersList() {
 
 function gameOver() {
 	socket.on('gameOver', bool => {
-		console.log('<hDJfhsdhkfhjsdhfukzrfn,dsbhgfhsdhfjsd');
-
 		gameOverView.style.display = '';
+		const timer = gameOverView.querySelector('.timePlayed') as HTMLElement;
+		const points = gameOverView.querySelector('.points') as HTMLElement;
+		// console.log(playerLocal.getTimePlayed());
+		// timer.innerHTML = `<h3>${playerLocal.getTimePlayed()} min</h3>`;
+		points.innerHTML = `<h3>${playerLocal.getPoints()} points</h3>`;
 	});
+}
+
+function updateLeaderboard() {
+	const copyPlayerList: Player[] = playersList;
+	copyPlayerList.sort((player1, player2) =>
+		player1.getPoints() > player2.getPoints() ? 1 : -1
+	);
+	leaderboardList.innerHTML = copyPlayerList
+		.slice(0, 5)
+		.map(player => `<li>${player.getUsername()} : ${player.getPoints()}</li>`)
+		.join('');
 }
 
 setInterval(render, 1000 / 60);

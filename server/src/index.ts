@@ -57,7 +57,8 @@ io.on('connection', socket => {
 			true,
 			null,
 			username,
-			socket.id
+			socket.id,
+			new Date()
 		);
 		player.setOnEatenListener(() => {
 			socket.emit('gameOver', true);
@@ -120,7 +121,17 @@ function getPlayer(playerId: string): Player {
 			return player;
 		}
 	}
-	return new Player(0, 0, 0, '', false, null, 'NULLPLAYER', 'NULLPLAYER');
+	return new Player(
+		0,
+		0,
+		0,
+		'',
+		false,
+		null,
+		'NULLPLAYER',
+		'NULLPLAYER',
+		new Date(Date.now())
+	);
 }
 
 function generateDot(): Dot {
@@ -140,10 +151,7 @@ function eatFood(playerId: string): void {
 	const player: Player = getPlayer(playerId);
 	for (let i: number = 0; i < foodsList.length; i++) {
 		if (foodsList[i] != null) {
-			if (
-				calculDistanceBetweenPoints(player, foodsList[i]) <=
-				player.radius + foodsList[i].radius
-			) {
+			if (collisionDetection(player, i)) {
 				player.eats(foodsList[i]);
 				const entityIdx = entitiesList.findIndex(
 					entity => entity === foodsList[i]
@@ -156,6 +164,13 @@ function eatFood(playerId: string): void {
 			}
 		}
 	}
+}
+
+function collisionDetection(player: Player, i: number): boolean {
+	return (
+		calculDistanceBetweenPoints(player, foodsList[i]) <=
+		player.radius + foodsList[i].radius
+	);
 }
 
 function eatPlayer(playerId: string): void {
@@ -176,7 +191,7 @@ function eatPlayer(playerId: string): void {
 }
 
 function generateDots(): void {
-	for (let i = 1; i <= 25; i++) {
+	for (let i = 1; i <= 50; i++) {
 		let dot = generateDot();
 		foodsList.push(dot);
 		entitiesList.push(dot);

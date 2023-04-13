@@ -8,6 +8,7 @@ export default class Dot {
 	xPosition: number;
 	yPosition: number;
 	context: CanvasRenderingContext2D | null;
+	isPlayer: boolean;
 
 	onEatenListener?: () => void;
 
@@ -27,27 +28,10 @@ export default class Dot {
 		this.points = points;
 		this.alive = alive;
 		this.context = context;
+		this.isPlayer = false;
 	}
 
 	drawDot() {
-		if (!this.context) return;
-		this.context.strokeStyle = this.colour;
-		this.context.lineWidth = 4;
-		this.context.fillStyle = this.colour;
-		this.context.beginPath();
-		this.context.arc(
-			this.xPosition,
-			this.yPosition,
-			this.radius,
-			0,
-			2 * Math.PI,
-			false
-		);
-		this.context.fill();
-		this.context.stroke();
-	}
-
-	drawDotPlayer(username: string) {
 		if (!this.context) return;
 		this.context.strokeStyle = this.colour;
 		this.context.lineWidth = 4;
