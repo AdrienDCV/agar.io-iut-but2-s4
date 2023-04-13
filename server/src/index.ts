@@ -31,8 +31,8 @@ let entitiesList: Dot[] = [];
 let playersList: Player[] = [];
 let foodsList: Dot[] = [];
 
-const SCENE_WIDTH: number = 2000;
-const SCENE_HEIGHT: number = 2000;
+const SCENE_WIDTH: number = 4000;
+const SCENE_HEIGHT: number = 4000;
 
 /* ################################################## */
 
@@ -179,7 +179,7 @@ function eatPlayer(playerId: string): void {
 }
 
 function generateDots(): void {
-	for (let i = 1; i <= 25; i++) {
+	for (let i = 1; i <= 200; i++) {
 		let dot = generateDot();
 		foodsList.push(dot);
 		entitiesList.push(dot);

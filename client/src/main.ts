@@ -256,8 +256,8 @@ function updateLeaderboard() {
 	const playersList: Player[] = entitiesList.filter(
 		entity => entity.isPlayer
 	) as Player[];
-	playersList.sort((player1, player2) =>
-		player1.getPoints() > player2.getPoints() ? 1 : -1
+	playersList.sort(
+		(player1, player2) => player2.getPoints() - player1.getPoints()
 	);
 	leaderboardList.innerHTML = playersList
 		.slice(0, 5)
